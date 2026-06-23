@@ -5,8 +5,8 @@ description: |
   modifying, refactoring, or fixing Rust domain models, use cases, repositories,
   state transitions, error enums, Result-based workflows, boundary DTO parsing,
   validation, PII handling, safe wrappers around unsafe/FFI boundaries,
-  rustfmt/clippy quality gates for domain code, business logic, or
-  review-adjacent remediation.
+  rustfmt/clippy quality gates, rustdoc API contracts for domain code,
+  business logic, or review-adjacent remediation.
   Applies to server-side Rust crates, backend services, domain crates, and CLIs
   with business rules. Skip frontend assets, build scripts, pure infrastructure,
   low-level unsafe/performance tuning unrelated to domain boundaries, and code
@@ -55,6 +55,7 @@ Read only the topic file(s) needed for the task:
 - PII Protection: [`references/pii-protection.md`](./references/pii-protection.md)
 - Unsafe Boundaries: [`references/unsafe-boundaries.md`](./references/unsafe-boundaries.md)
 - Formatting and Lints: [`references/fmt-lint.md`](./references/fmt-lint.md)
+- Rustdoc Contracts: [`references/rustdoc.md`](./references/rustdoc.md)
 - Persistence and Events: [`references/persistence-events.md`](./references/persistence-events.md)
 - Test Data: [`references/test-data.md`](./references/test-data.md)
 
@@ -69,6 +70,7 @@ Model invalid states and invalid transitions out of the type system where it is 
 - Keep persistence models, API DTOs, and domain models separate unless the project has an explicit convention otherwise.
 - Keep `unsafe` out of domain logic by default. When FFI, memory layout, or measured low-level performance requires it, hide it behind a small safe API with documented safety invariants.
 - Keep `rustfmt` and `clippy` clean for touched Rust code. Treat lint suppressions as design decisions that need narrow scope and a reason.
+- Document public domain APIs with rustdoc that states invariants, errors, state transitions, examples, and safety contracts where relevant.
 
 These are strong defaults, not absolutes. If existing project conventions conflict, follow the convention and leave a brief explanation when the deviation affects domain safety.
 

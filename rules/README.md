@@ -97,6 +97,11 @@ Review checklist headings define canonical numeric check IDs. Rule toggles may a
 | `9.3` | `narrow-lint-suppressions` | Formatting and lints |
 | `9.4` | `lint-suppression-domain-risk` | Formatting and lints |
 | `9.5` | `fmt-lint-ci-gates` | Formatting and lints |
+| `10.1` | `rustdoc-public-contracts` | Rustdoc |
+| `10.2` | `rustdoc-errors-panics-safety` | Rustdoc |
+| `10.3` | `rustdoc-safe-examples` | Rustdoc |
+| `10.4` | `rustdoc-links-doctests` | Rustdoc |
+| `10.5` | `rustdoc-lint-scope` | Rustdoc |
 
 Example disabling a check:
 
