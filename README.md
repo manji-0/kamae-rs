@@ -17,10 +17,12 @@ Core principles:
 - Use `Result<T, E>` with domain-specific error enums.
 - Convert external data through DTO/row/config structs before constructing domain types.
 - Keep PII and secrets behind redacting wrappers.
+- Keep `unsafe` out of domain logic by default; when unavoidable, hide it behind small safe APIs with documented safety invariants.
+- Keep formatting and lint gates clean for touched Rust code; treat lint suppressions as narrow, justified design decisions.
 
 ### `kamae-rs-review`
 
-Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, boundary validation, PII protection, persistence/events, and tests.
+Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, boundary validation, PII protection, unsafe boundaries, formatting/lints, persistence/events, and tests.
 
 ## Packaging
 

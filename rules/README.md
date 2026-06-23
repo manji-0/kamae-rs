@@ -87,6 +87,16 @@ Review checklist headings define canonical numeric check IDs. Rule toggles may a
 | `7.4` | `mutator-invariant-tests` | Tests |
 | `7.5` | `persistence-retry-tests` | Tests |
 | `7.6` | `boundary-observability-tests` | Tests |
+| `8.1` | `no-unsafe-domain-logic` | Unsafe boundaries |
+| `8.2` | `safe-unsafe-abstraction` | Unsafe boundaries |
+| `8.3` | `unsafe-safety-comments` | Unsafe boundaries |
+| `8.4` | `unsafe-does-not-bypass-domain` | Unsafe boundaries |
+| `8.5` | `unsafe-boundary-tests` | Unsafe boundaries |
+| `9.1` | `rustfmt-clean` | Formatting and lints |
+| `9.2` | `clippy-clean` | Formatting and lints |
+| `9.3` | `narrow-lint-suppressions` | Formatting and lints |
+| `9.4` | `lint-suppression-domain-risk` | Formatting and lints |
+| `9.5` | `fmt-lint-ci-gates` | Formatting and lints |
 
 Example disabling a check:
 
