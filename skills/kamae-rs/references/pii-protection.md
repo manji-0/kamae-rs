@@ -47,3 +47,20 @@ pub fn expose_for_delivery(&self) -> &EmailAddress {
 ```
 
 Never format sensitive values into domain errors or logs.
+
+## Classify Identifiers Before Logging
+
+Field names such as `user_id` or `passenger_id` do not make an identifier safe.
+Apply the rules in [`logging-metrics.md`](./logging-metrics.md#which-ids-belong-in-logs):
+
+- **Safe by default**: opaque surrogate aggregate IDs, correlation IDs, internal
+  job/transaction IDs, and bounded domain enums.
+- **Never log**: secrets, government IDs, payment identifiers, contact identity,
+  person descriptors, health data, precise location, and network tracking IDs.
+- **Conditional**: person-linked IDs (`user_id`, `customer_id`, `patient_id`,
+  `device_id`, partner references) only when the project documents them as opaque
+  surrogates with safe `Display` / `Debug`.
+
+Encode the decision in the type. If an ID must not appear in general logs,
+prevent accidental emission through `Redacted<T>`, restricted formatting, or
+adapter-only exposure.

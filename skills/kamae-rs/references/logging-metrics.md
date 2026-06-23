@@ -33,7 +33,7 @@ pub struct AssignDriverLog {
 
 tracing::info!(
     request_id = %log.request_id,
-    passenger_id = %log.passenger_id,
+    passenger_id = %log.passenger_id, // safe only for opaque surrogate IDs
     driver_id = %log.driver_id,
     from = ?log.from,
     to = ?log.to,
@@ -83,8 +83,11 @@ Follow the rules in [`pii-protection.md`](./pii-protection.md).
   interpolating the value still produces a safe representation.
 - When an identifier is sensitive, log a hash or opaque reference instead.
 
+See [Which IDs Belong in Logs](#which-ids-belong-in-logs) for classification rules.
+
 ```rust
 // Good: only non-sensitive identifiers and states appear in logs.
+// `passenger_id` is safe here only because it is an opaque surrogate, not email/phone.
 tracing::info!(
     request_id = %request_id,
     passenger_id = %passenger_id,
@@ -95,6 +98,119 @@ tracing::info!(
 // Avoid: a raw email would leak into log storage.
 tracing::info!("notification sent to {}", email);
 ```
+
+## Which IDs Belong in Logs
+
+Classify every identifier before it reaches logs, spans, metrics, or errors.
+The field name does not decide safety; the identifier's meaning, derivation, and
+re-identification risk do.
+
+### Default: safe to log
+
+Log these when they help operations correlate work without exposing secrets or
+direct personal identity:
+
+| Kind | Examples | Why it is usually safe |
+| --- | --- | --- |
+| Correlation / tracing | `correlation_id`, `trace_id`, `span_id`, `request_id` (HTTP) | Ephemeral or operational; not identity |
+| Internal aggregate IDs | `order_id`, `request_id`, `shipment_id`, `command_id`, `event_id` | Opaque surrogate keys scoped to the service |
+| Process / job IDs | `job_id`, `outbox_id`, `batch_id`, `transaction_id` (internal) | Infrastructure correlation |
+| Tenant / org context | `tenant_id`, `organization_id`, `fleet_id` | Needed for multi-tenant ops when access is controlled |
+| Bounded domain enums | `state`, `command_name`, `event_type`, `error_code` | Low cardinality; not personal data |
+
+Requirements for "safe to log":
+
+1. **Opaque surrogate**: randomly assigned or sequentially issued inside the
+   system, not derived from email, phone, name, government ID, or card data.
+2. **Not a secret**: not a session token, API key, password, or signed URL
+   capability.
+3. **Low standalone re-identification risk**: the value alone does not identify
+   a natural person outside the application's controlled data store.
+4. **Safe `Display` / `Debug`**: the newtype's formatting path is reviewed for
+   logging and does not expose nested PII.
+
+```rust
+// Safe: opaque surrogate IDs with explicit logging newtypes.
+tracing::info!(
+    request_id = %request_id,
+    command_id = %command_id,
+    correlation_id = %correlation_id,
+    state = ?state,
+    "request transitioned to en-route"
+);
+```
+
+### Default: do not log
+
+Never log these in general-purpose application logs, spans, metrics labels, or
+error strings:
+
+| Kind | Examples | Why |
+| --- | --- | --- |
+| Secrets / auth material | API keys, passwords, session tokens, refresh tokens, HMAC secrets, signed download URLs | Credential disclosure |
+| Government / regulated IDs | SSN, My Number, passport, driver's license, national health ID | Direct personal identity |
+| Payment identifiers | PAN, CVV, full bank account, raw payment-method tokens from PSPs | PCI / financial exposure |
+| Contact identity | email, phone, messenger handle when used as account identity | Direct PII |
+| Person descriptors | legal name, birth date, address, free-text notes about a person | Direct PII |
+| Health / special-category data | diagnosis, prescription, patient notes | Regulated sensitive data |
+| Precise location | lat/long, full street address, room-level indoor position | Location privacy |
+| Network identity | client IP, device fingerprint, advertising ID | Tracking / PII in many jurisdictions |
+| External IDs that embed PII | `user@example.com` as key, hashed email in reversible scheme, provider subject that is an email | PII smuggled as an "ID" |
+
+If an incident needs one of these values, route it through a restricted audit
+export or support tool with explicit authorization. Do not widen general log
+retention to carry them.
+
+### Conditional: classify in the domain model
+
+These are common and often logged, but only after an explicit project decision.
+Encode the decision in the type and its `Display` / `Debug` contract.
+
+| Kind | Log when | Do not log when |
+| --- | --- | --- |
+| `user_id`, `passenger_id`, `customer_id`, `patient_id` | Opaque surrogate UUID/ULID issued by your system | Value is email/phone, government ID, provider subject, or reversible hash of PII |
+| `account_id`, `profile_id` | Internal account record key unrelated to login identifier | Same value is used as login name or public profile slug tied to a person |
+| `driver_id`, `staff_id`, `provider_id` | Internal workforce/resource key for operations | Exposes personal identity directly or maps 1:1 to legal name in logs |
+| `device_id`, `installation_id` | Opaque app-generated surrogate with low tracking risk policy | Vendor advertising ID or hardware serial |
+| `external_id`, `partner_ref` | Opaque partner reference with contract allowing ops logging | Partner-supplied value contains email, phone, or national ID |
+| Hashed identifier | Pepper/HMAC-based pseudonym approved by security review | Unsalted or fast hash of email/phone used across systems |
+
+When conditional IDs are loggable, keep them in named newtypes such as
+`PassengerId` or `CorrelationId`. Make non-loggable identifiers use
+`Redacted<T>`, `SecretString`, or a type whose `Display` is intentionally
+unavailable outside approved adapters.
+
+### Metric and span rules for IDs
+
+IDs safe for logs are not automatically safe as metric labels.
+
+- **Do log**: aggregate IDs in log fields and trace attributes when cardinality
+  per request is acceptable for the backend.
+- **Do not label metrics with**: raw user/customer/passenger IDs, timestamps,
+  email, phone, IP, or unbounded strings. Prefer bounded domain labels such as
+  `state`, `command`, `error_code`, or `tenant_id` when cardinality is known.
+
+```rust
+// Good metric labels: bounded domain vocabulary.
+metrics::counter!("taxi_request.driver_assigned", "fleet" => fleet.as_str()).increment(1);
+
+// Avoid: per-user metric labels explode cardinality and leak identity into TSDB.
+metrics::counter!("notification.sent", "user_id" => user_id.as_str()).increment(1);
+```
+
+### Quick decision checklist
+
+Before adding an ID to a log line, answer:
+
+1. Is it a secret or auth token? If yes, do not log.
+2. Is it direct PII or a regulated identifier? If yes, do not log.
+3. Is it an opaque surrogate created by our system, with no embedded PII? If
+   yes, it is usually safe to log.
+4. Does logging it in this field (`Display` / span / metric label) expose more
+   than intended? If yes, redact, hash with an approved scheme, or log only in
+   restricted audit paths.
+5. Is the type's formatting implementation reviewed for safe logging? If not,
+   fix the type before logging it.
 
 ## Log State Transitions Explicitly
 

@@ -56,3 +56,21 @@ metric label, or error display string that carries raw sensitive values.
 
 Also check that debug implementations, redacting wrappers, and allowlists are
 applied consistently before domain objects reach observability helpers.
+
+## 11.8 Are logged IDs classified correctly? - High
+
+Cross-check with the "Which IDs Belong in Logs" section in
+`logging-metrics.md`. Flag identifiers logged by field name assumption rather
+than documented safety.
+
+Escalate when logs, spans, or metric labels carry:
+
+- secrets, session tokens, or API keys
+- government, payment, health, or contact identity values
+- person-linked IDs that are not opaque surrogates (email-as-key, provider
+  subject, reversible hash of PII)
+- raw user/customer/passenger IDs as metric labels
+
+Do not flag opaque surrogate aggregate IDs (`request_id`, `order_id`,
+`correlation_id`, internal `transaction_id`) when the type's formatting is
+reviewed and the value is not derived from PII.

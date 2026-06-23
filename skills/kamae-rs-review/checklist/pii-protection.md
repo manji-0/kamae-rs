@@ -22,3 +22,12 @@ Flag broad getters such as `email(&self) -> &str` for sensitive values. Suggest 
 ## 5.4 Is observability redacted by default? - High
 
 Flag logging/metrics helpers that accept arbitrary domain objects or DTOs without redaction policy, allowlist fields, or explicit safe display wrappers.
+
+## 5.5 Are person-linked IDs treated as conditional, not automatically safe? - High
+
+Cross-check with `logging-metrics.md#which-ids-belong-in-logs`. Flag `user_id`,
+`passenger_id`, `customer_id`, `patient_id`, `device_id`, or partner references
+logged without evidence that the value is an opaque surrogate.
+
+Do not flag internal aggregate IDs such as `request_id`, `order_id`, or
+`correlation_id` when they are clearly surrogate keys with safe formatting.
