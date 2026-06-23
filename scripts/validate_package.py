@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import py_compile
 import re
 import sys
 from pathlib import Path
@@ -194,6 +195,14 @@ def check_crate_guides(errors: list[str]) -> None:
                 fail(errors, f"{path.relative_to(ROOT)}: referenced crate guide does not exist: {guide}")
 
 
+def check_python_scripts(errors: list[str]) -> None:
+    for path in sorted((ROOT / "scripts").glob("*.py")):
+        try:
+            py_compile.compile(str(path), doraise=True)
+        except py_compile.PyCompileError as exc:
+            fail(errors, f"{path.relative_to(ROOT)}: Python syntax error: {exc.msg}")
+
+
 def main() -> int:
     errors: list[str] = []
     check_json(errors)
@@ -202,6 +211,7 @@ def main() -> int:
     check_skill_frontmatter(errors)
     check_markdown_links(errors)
     check_crate_guides(errors)
+    check_python_scripts(errors)
 
     if errors:
         print("Package smoke test failed:")
@@ -210,7 +220,7 @@ def main() -> int:
         return 1
 
     print("Package smoke test passed.")
-    print("Checked JSON manifests, skill frontmatter, Markdown links, manifest skill paths, and crate-guide references.")
+    print("Checked JSON manifests, skill frontmatter, Markdown links, manifest skill paths, crate-guide references, and Python scripts.")
     return 0
 
 

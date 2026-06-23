@@ -34,6 +34,10 @@ The package includes both Claude and Codex manifests:
 
 Run `python3 scripts/validate_package.py` before publishing or sharing a package archive. The smoke test validates JSON manifests, skill frontmatter, relative Markdown links, manifest skill paths, and crate-guide references.
 
+## Review Tools
+
+Run `python3 scripts/review_probe.py <path>` to collect review leads from Rust files before walking the review checklist. The probe is intentionally conservative: it highlights patterns for human/agent inspection and does not produce findings by itself.
+
 ## Customization
 Rules live under `.claude/rules/`, `.codex/rules/`, user-level rule directories, or this repo's `rules/defaults/`. See [`rules/README.md`](./rules/README.md).
 
