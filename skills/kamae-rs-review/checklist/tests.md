@@ -26,3 +26,9 @@ Flag repository/use-case changes without coverage for DB constraint failures, op
 ## 7.6 Are boundary and observability failures tested? - Medium
 
 Flag boundary changes without tests for unknown fields, defaulted fields, malformed DTOs, redacted logs/errors, and safe serialization of read models.
+
+## 7.7 Are input-wide invariants covered with property tests? - Low
+
+Cross-check [`../../kamae-rs/references/property-based-tests.md`](../../kamae-rs/references/property-based-tests.md). Suggest property tests when value-object validation, round trips, transition laws, or idempotency lack example-table coverage and generators can use public constructors.
+
+Do not require property tests for small closed enums, trivial getters, or code already guarded by compile-time state types.

@@ -29,5 +29,6 @@ Detection-only crates:
 - Async/streams: `tokio`, `async-trait`, `futures`, `tokio-stream`, `async-stream`
 - RPC/messaging: `tonic`, `prost`, `lapin`, `rdkafka`
 - Resilience: `tower`, `governor`
+- Testing: `proptest` -> `references/crate-guides/proptest.md`; detection-only: `quickcheck`, `proptest-regressions`, `trybuild`
 
 Detection-only means the crate should inform local code review or implementation context, but there is no plugin guide to load. Prefer existing project conventions and standard-library Rust patterns before adding dependencies.

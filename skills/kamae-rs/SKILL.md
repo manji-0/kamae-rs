@@ -44,6 +44,7 @@ Read `Cargo.toml` and the workspace members relevant to the edited files. Note t
 - Detection-only async: `tokio`, `async-trait`, `futures`, `tokio-stream`, `async-stream`
 - Detection-only RPC/messaging: `tonic`, `prost`, `lapin`, `rdkafka`
 - Detection-only resilience: `tower`, `governor`
+- Detection-only testing: `proptest`, `quickcheck`, `proptest-regressions`, `trybuild`
 
 If a dependency is relevant, load the matching file under [`references/crate-guides/`](./references/crate-guides/). If no crate guide matches, use standard-library Rust idioms before introducing a new dependency.
 
@@ -69,6 +70,7 @@ Read only the topic file(s) needed for the task:
 - Domain Macros: [`references/domain-macros.md`](./references/domain-macros.md)
 - Service Boundaries: [`references/service-boundaries.md`](./references/service-boundaries.md)
 - Test Data: [`references/test-data.md`](./references/test-data.md)
+- Property-Based Tests: [`references/property-based-tests.md`](./references/property-based-tests.md)
 
 ## Core Stance
 

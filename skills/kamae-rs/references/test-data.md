@@ -18,7 +18,10 @@ For important state-machine guarantees, add compile-fail tests with `trybuild` w
 
 Use normal unit tests for successful transitions, error mapping, DTO conversion, and PII redaction behavior.
 
-## Add Property-Based Tests for Invariants
+## Property-Based Tests
+
+For generator design, state-machine laws, shrinking rules, regression files, and
+CI budget, see [`property-based-tests.md`](./property-based-tests.md).
 
 Use property-based tests when an invariant should hold across many inputs:
 value-object constructors, parser/formatter round trips, state-machine

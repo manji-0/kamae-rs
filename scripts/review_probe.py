@@ -130,6 +130,15 @@ PATTERNS = [
         re.compile(r"#\[source\]|#\[from\]|error\s*=\s*%|error\.debug\s*="),
         "Check error chain preservation, single authoritative log line, and bounded metric labels.",
     ),
+    Pattern(
+        "property-test",
+        "property-based-tests.md",
+        re.compile(
+            r"\bproptest!\b|\bproptest::|\bquickcheck\b|\bProptestConfig\b|"
+            r"\bprop_assume!\b|\bprop_assert\b|\bStrategy\b|\bproptest_regressions\b"
+        ),
+        "Check constructor-based generators, explicit properties, and no live I/O in properties.",
+    ),
 ]
 
 PUBLIC_ITEM_RE = re.compile(
