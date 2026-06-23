@@ -1,7 +1,5 @@
 # Development Guide
 
-<!-- constrained-by ./skills/kamae-rs/references/ci-setup.md -->
-
 This document explains how to set up a local development environment for the
 `kamae-rs` skill package and how to run the checks that keep the package valid.
 
