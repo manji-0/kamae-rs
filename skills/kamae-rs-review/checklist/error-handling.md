@@ -27,3 +27,11 @@ Flag mutex guards, database row locks, or other exclusive resources held across
 ## 3.6 Are error variants meaningful to callers? - Low
 
 Flag vague variants such as `Other(String)` or `InvalidInput(String)` when callers need to branch exhaustively.
+
+## 3.7 Are errors chained with `#[source]` / `#[from]`? - Medium
+
+Cross-check [`../../kamae-rs/references/error-handling.md`](../../kamae-rs/references/error-handling.md). Flag use-case errors that stringify inner failures with `format!` instead of preserving `thiserror` source chains.
+
+## 3.8 Do error messages avoid PII and secrets? - High
+
+Cross-check [`pii-protection.md`](./pii-protection.md). Flag error `Display` text that embeds email, phone, tokens, or raw SQL/HTTP bodies.

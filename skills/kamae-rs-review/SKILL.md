@@ -58,6 +58,10 @@ Use probe output only to choose what to inspect. Do not report a finding until y
 | Rustdoc, public API docs, `# Errors`, `# Panics`, `# Safety`, doctests, intra-doc links | `rustdoc.md`, nearby concern checklist, `tests.md` |
 | CI workflows, required checks, GitHub Actions, cargo fmt/clippy/test/doc jobs, advisory checks | `ci-setup.md`, `fmt-lint.md`, `tests.md` |
 | Repositories, transactions, DB constraints, outbox/events, retries/idempotency | `persistence-events.md`, `aggregate-transactions.md`, `state-transitions.md`, `tests.md` |
+| `Stream`, projections, outbox polling, continuous queries, event subscriptions | `stream-continuous-queries.md`, `persistence-events.md`, `service-boundaries.md`, `tests.md` |
+| proc-macro, derive macro, `macro_rules!`, generated newtype/event impls | `domain-macros.md`, `domain-modeling.md`, `boundary.md`, `tests.md` |
+| gRPC/Protobuf, tonic/prost, message queues, cross-service contracts | `service-boundaries.md`, `boundary.md`, `persistence-events.md`, `tests.md` |
+| `#[source]`, `#[from]`, error chain logging, duplicate error logs | `error-handling.md`, `logging-metrics.md`, `tests.md` |
 | Test-only helpers, builders, fixtures, compile-fail coverage | `tests.md` |
 
 Use nearby checklists when a diff crosses concerns. Do not load unrelated files just to restate generic advice.
@@ -75,6 +79,9 @@ Use nearby checklists when a diff crosses concerns. Do not load unrelated files 
 - [`checklist/rustdoc.md`](./checklist/rustdoc.md)
 - [`checklist/ci-setup.md`](./checklist/ci-setup.md)
 - [`checklist/persistence-events.md`](./checklist/persistence-events.md)
+- [`checklist/stream-continuous-queries.md`](./checklist/stream-continuous-queries.md)
+- [`checklist/domain-macros.md`](./checklist/domain-macros.md)
+- [`checklist/service-boundaries.md`](./checklist/service-boundaries.md)
 - [`checklist/application-wiring.md`](./checklist/application-wiring.md)
 - [`checklist/aggregate-transactions.md`](./checklist/aggregate-transactions.md)
 - [`checklist/tests.md`](./checklist/tests.md)

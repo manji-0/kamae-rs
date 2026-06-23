@@ -97,6 +97,39 @@ PATTERNS = [
         re.compile(r"\btokio::spawn\b|spawn\s*\(|await\b|Mutex|RwLock"),
         "Check lost task failures, transaction boundaries across await, and ignored Results.",
     ),
+    Pattern(
+        "stream-projection",
+        "stream-continuous-queries.md",
+        re.compile(
+            r"\bStream\b|\bStreamExt\b|\bstream!\b|\basync_stream\b|"
+            r"\bprojection\b|\bsubscribe\b|\bcheckpoint\b|\boutbox\b"
+        ),
+        "Check durable cursors, backpressure, projection idempotency, and CQRS boundaries.",
+    ),
+    Pattern(
+        "domain-macro",
+        "domain-macros.md",
+        re.compile(
+            r"proc_macro|macro_rules!\s|#\[derive\s*\(\s*DomainEvent|"
+            r"#\[derive\s*\(\s*Newtype|nutype\s*\("
+        ),
+        "Check generated invariants, safe Debug, and schema/version metadata.",
+    ),
+    Pattern(
+        "service-boundary",
+        "service-boundaries.md",
+        re.compile(
+            r"\btonic::|\bprost::|\bCircuitBreaker\b|\bcircuit_breaker\b|"
+            r"\bidempotency\b|\bschema_version\b|\bgrpc\b|\bprotobuf\b"
+        ),
+        "Check DTO conversion, schema evolution, idempotency, and adapter-level resilience.",
+    ),
+    Pattern(
+        "error-chain-log",
+        "logging-metrics.md",
+        re.compile(r"#\[source\]|#\[from\]|error\s*=\s*%|error\.debug\s*="),
+        "Check error chain preservation, single authoritative log line, and bounded metric labels.",
+    ),
 ]
 
 PUBLIC_ITEM_RE = re.compile(

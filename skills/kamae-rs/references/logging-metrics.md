@@ -259,6 +259,44 @@ match repository.find_by_id(&request_id).await {
 Avoid logging the same failure at every layer. Let the use case or application
 service own the authoritative log line and propagate the typed error upward.
 
+## Integrate Error Chains with Structured Logging
+
+`thiserror` source chains and `tracing` fields should work together so a single
+log line exposes both domain context and the underlying cause.
+
+```rust
+if let Err(error) = self.execute(request_id, driver).await {
+    tracing::error!(
+        request_id = %request_id,
+        driver_id = %driver.id,
+        error = %error,           // full Display chain via thiserror
+        error.debug = ?error,     // optional: Debug for support tooling
+        "assign driver use case failed"
+    );
+    return Err(error);
+}
+```
+
+Guidelines:
+
+- Prefer `%error` on `thiserror` enums so `#[source]` causes appear in order.
+- Add domain fields (`request_id`, `command`, `error_code`) alongside the error,
+  not inside its `Display` string.
+- Record the error on the active span when the failure aborts a use case:
+
+```rust
+tracing::Span::current().record("error", tracing::field::display(&error));
+```
+
+- Map infrastructure failures to semantic variants before logging when the raw
+  client error would leak endpoints, SQL, or secrets.
+- Increment metrics with bounded labels such as `error_code` derived from the
+  enum variant, not the full error text.
+
+Cross-check error enum design in [`error-handling.md`](./error-handling.md).
+Do not duplicate logging in repository adapters if the use case already logs
+the same failure with richer domain context.
+
 ## Use `tracing` Only When Helpful
 
 `tracing` is a convenient implementation of these guidelines, but it is not a

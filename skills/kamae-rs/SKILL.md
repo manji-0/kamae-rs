@@ -41,7 +41,9 @@ Read `Cargo.toml` and the workspace members relevant to the edited files. Note t
 - PII/secrets: `secrecy`; detection-only: `zeroize`
 - Logging/tracing/metrics: `tracing`, `log`, `metrics`; monitoring export base: `opentelemetry`; optional pull exporter: `prometheus`
 - Detection-only persistence: `sqlx`, `diesel`, `sea-orm`
-- Detection-only async: `tokio`, `async-trait`
+- Detection-only async: `tokio`, `async-trait`, `futures`, `tokio-stream`, `async-stream`
+- Detection-only RPC/messaging: `tonic`, `prost`, `lapin`, `rdkafka`
+- Detection-only resilience: `tower`, `governor`
 
 If a dependency is relevant, load the matching file under [`references/crate-guides/`](./references/crate-guides/). If no crate guide matches, use standard-library Rust idioms before introducing a new dependency.
 
@@ -63,6 +65,9 @@ Read only the topic file(s) needed for the task:
 - Rustdoc Contracts: [`references/rustdoc.md`](./references/rustdoc.md)
 - CI Setup: [`references/ci-setup.md`](./references/ci-setup.md)
 - Persistence and Events: [`references/persistence-events.md`](./references/persistence-events.md)
+- Streams and Continuous Queries: [`references/stream-continuous-queries.md`](./references/stream-continuous-queries.md)
+- Domain Macros: [`references/domain-macros.md`](./references/domain-macros.md)
+- Service Boundaries: [`references/service-boundaries.md`](./references/service-boundaries.md)
 - Test Data: [`references/test-data.md`](./references/test-data.md)
 
 ## Core Stance

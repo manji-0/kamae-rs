@@ -74,3 +74,12 @@ Escalate when logs, spans, or metric labels carry:
 Do not flag opaque surrogate aggregate IDs (`request_id`, `order_id`,
 `correlation_id`, internal `transaction_id`) when the type's formatting is
 reviewed and the value is not derived from PII.
+
+## 11.9 Are error chains logged once with domain context? - Medium
+
+Cross-check [`../../kamae-rs/references/logging-metrics.md`](../../kamae-rs/references/logging-metrics.md#integrate-error-chains-with-structured-logging). Flag duplicate `tracing::error!` at every adapter layer for the same failure, or logs that stringify errors without `%error` / source chain formatting.
+
+## 11.10 Do error metrics use bounded labels? - Low
+
+Flag counters or histograms labeled with raw error text, SQL fragments, or
+unbounded strings instead of enum variant names or stable `error_code` values.

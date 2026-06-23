@@ -41,3 +41,11 @@ Use typed timestamps, money, and units in event payloads. For example, prefer
 `OccurredAt`, `Money`, `DistanceMeters`, or `CurrencyCode` value objects over
 bare `String`, `i64`, or `f64` fields. Event records are long-lived contracts;
 make units and precision obvious at the type boundary.
+
+## Expose Persisted Events as Streams When Needed
+
+When read models, integrations, or operators subscribe to change feeds, expose
+persisted events or outbox rows through `futures::Stream` ports rather than
+pushing ad-hoc polling loops into use cases. See
+[`stream-continuous-queries.md`](./stream-continuous-queries.md) for backpressure,
+checkpoints, and projection idempotency.

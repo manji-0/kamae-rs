@@ -26,7 +26,7 @@ Core principles:
 
 ### `kamae-rs-review`
 
-Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, application wiring, aggregate transactions, boundary validation, PII protection, unsafe boundaries, formatting/lints, rustdoc, CI setup, persistence/events, and tests.
+Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, application wiring, aggregate transactions, boundary validation, PII protection, unsafe boundaries, formatting/lints, rustdoc, CI setup, persistence/events, streams and continuous queries, domain macros, service boundaries, and tests.
 
 ## Packaging
 

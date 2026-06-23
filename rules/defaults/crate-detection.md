@@ -26,6 +26,8 @@ Detection-only crates:
 - Validation/newtype helpers: `derive_more`
 - PII/secrets: `zeroize`
 - Persistence: `sqlx`, `diesel`, `sea-orm`
-- Async: `tokio`, `async-trait`
+- Async/streams: `tokio`, `async-trait`, `futures`, `tokio-stream`, `async-stream`
+- RPC/messaging: `tonic`, `prost`, `lapin`, `rdkafka`
+- Resilience: `tower`, `governor`
 
 Detection-only means the crate should inform local code review or implementation context, but there is no plugin guide to load. Prefer existing project conventions and standard-library Rust patterns before adding dependencies.

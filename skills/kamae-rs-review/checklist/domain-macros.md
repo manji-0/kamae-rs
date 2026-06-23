@@ -1,0 +1,29 @@
+# Domain Macros Checklist
+
+Reference: [`../../kamae-rs/references/domain-macros.md`](../../kamae-rs/references/domain-macros.md).
+
+## 16.1 Do macros hide domain invariants? - High
+
+Flag proc-macros or derives that add public fields, `Default`, silent coercion,
+or validation that differs from hand-written domain rules.
+
+## 16.2 Is generated Debug/Display safe for logs? - High
+
+Cross-check [`logging-metrics.md`](./logging-metrics.md). Flag generated
+`Debug`/`Display` on IDs, events, or payloads that could expose PII or secrets.
+
+## 16.3 Are macros justified by repetition? - Low
+
+Flag new internal proc-macro crates for one or two types when `nutype`,
+`TryFrom`, or explicit impls would be clearer in review.
+
+## 16.4 Do event macros preserve version metadata? - Medium
+
+Flag domain events without stable `name`/`version` (or equivalent) when they are
+persisted, queued, or consumed across deploys.
+
+## 16.5 Are Deserialize/FromRow derives avoided on macro-generated domain types? - Medium
+
+Cross-check [`boundary.md`](./boundary.md). Flag macro-generated serde or ORM
+derives on invariant-bearing domain types unless the project documents an
+explicit leaf-validation convention.
