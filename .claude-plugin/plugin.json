@@ -1,0 +1,23 @@
+{
+  "name": "kamae-rs",
+  "description": "Kamae (構え) - robust server-side Rust design and review skills",
+  "version": "0.1.0",
+  "author": {
+    "name": "kamae-rs contributors"
+  },
+  "repository": "https://github.com/iwasa-kosui/kamae-rs",
+  "license": "MIT",
+  "skills": [
+    "./skills/kamae-rs",
+    "./skills/kamae-rs-review"
+  ],
+  "keywords": [
+    "rust",
+    "domain-modeling",
+    "state-machine",
+    "result-types",
+    "newtype",
+    "coding-agent",
+    "server-side"
+  ]
+}

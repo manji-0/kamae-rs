@@ -1,0 +1,34 @@
+{
+  "name": "kamae-rs",
+  "version": "0.1.0",
+  "description": "Kamae (構え) - robust server-side Rust design and review skills",
+  "author": {
+    "name": "kamae-rs contributors"
+  },
+  "repository": "https://github.com/iwasa-kosui/kamae-rs",
+  "license": "MIT",
+  "keywords": [
+    "rust",
+    "domain-modeling",
+    "state-machine",
+    "result-types",
+    "newtype",
+    "coding-agent",
+    "server-side"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Kamae Rust",
+    "shortDescription": "Robust Rust domain design and review",
+    "developerName": "kamae-rs contributors",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Write",
+      "Review"
+    ],
+    "defaultPrompt": [
+      "Use $kamae-rs to refine this Rust domain model.",
+      "Use $kamae-rs-review to review this Rust diff."
+    ]
+  }
+}

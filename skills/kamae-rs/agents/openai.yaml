@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kamae Rust"
+  short_description: "Robust Rust domain design"
+  default_prompt: "Use $kamae-rs to implement, refactor, or fix Rust domain validation with typed states and Result errors."
