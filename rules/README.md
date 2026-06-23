@@ -102,6 +102,11 @@ Review checklist headings define canonical numeric check IDs. Rule toggles may a
 | `10.3` | `rustdoc-safe-examples` | Rustdoc |
 | `10.4` | `rustdoc-links-doctests` | Rustdoc |
 | `10.5` | `rustdoc-lint-scope` | Rustdoc |
+| `11.1` | `ci-required-reviewer-checks` | CI setup |
+| `11.2` | `ci-representative-matrix` | CI setup |
+| `11.3` | `ci-risk-tied-safety-jobs` | CI setup |
+| `11.4` | `ci-advisory-check-clarity` | CI setup |
+| `11.5` | `ci-local-reproduction` | CI setup |
 
 Example disabling a check:
 

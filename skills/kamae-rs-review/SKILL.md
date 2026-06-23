@@ -7,9 +7,9 @@ description: |
   when reviewing Rust pull requests, diffs, audits, or quality checks involving
   domain models, use cases, repositories, DTO conversion, safe wrappers around
   unsafe/FFI boundaries, rustfmt/clippy quality gates, rustdoc API contracts,
-  or business logic. Skip frontend assets, build scripts, pure infrastructure, low-level
-  unsafe/performance tuning unrelated to domain boundaries, and code unrelated
-  to domain behavior.
+  CI setup for Rust domain checks, or business logic. Skip frontend assets,
+  build scripts, pure infrastructure, low-level unsafe/performance tuning
+  unrelated to domain boundaries, and code unrelated to domain behavior.
 ---
 
 # Kamae Rust Review
@@ -54,6 +54,7 @@ Use probe output only to choose what to inspect. Do not report a finding until y
 | `unsafe`, `unsafe fn`, `unsafe impl`, FFI, raw pointers, `MaybeUninit`, `transmute`, safe wrappers | `unsafe-boundaries.md`, `boundary.md`, `tests.md` |
 | `rustfmt`, `clippy`, lint configuration, `#[allow]`, warnings, CI quality gates | `fmt-lint.md`, nearby concern checklist, `tests.md` |
 | Rustdoc, public API docs, `# Errors`, `# Panics`, `# Safety`, doctests, intra-doc links | `rustdoc.md`, nearby concern checklist, `tests.md` |
+| CI workflows, required checks, GitHub Actions, cargo fmt/clippy/test/doc jobs, advisory checks | `ci-setup.md`, `fmt-lint.md`, `tests.md` |
 | Repositories, transactions, DB constraints, outbox/events, retries/idempotency | `persistence-events.md`, `state-transitions.md`, `tests.md` |
 | Test-only helpers, builders, fixtures, compile-fail coverage | `tests.md` |
 
@@ -69,6 +70,7 @@ Use nearby checklists when a diff crosses concerns. Do not load unrelated files 
 - [`checklist/unsafe-boundaries.md`](./checklist/unsafe-boundaries.md)
 - [`checklist/fmt-lint.md`](./checklist/fmt-lint.md)
 - [`checklist/rustdoc.md`](./checklist/rustdoc.md)
+- [`checklist/ci-setup.md`](./checklist/ci-setup.md)
 - [`checklist/persistence-events.md`](./checklist/persistence-events.md)
 - [`checklist/tests.md`](./checklist/tests.md)
 
@@ -78,7 +80,7 @@ Use nearby checklists when a diff crosses concerns. Do not load unrelated files 
 - Medium: weak domain contract, non-exhaustive error/state handling, persistence consistency risk.
 - Low: maintainability, idiom, or test-quality issue that does not immediately compromise correctness.
 
-Escalate when the diff touches external boundaries, authorization/tenant isolation, money, irreversible lifecycle transitions, persistence/event atomicity, secrets, unsafe soundness, FFI, misleading public API docs, lint suppressions that hide correctness risks, or production observability. Downgrade when the risk is compile-time contained, test-only, startup-only, internal to a trusted adapter, generated code, private helper docs, or blocked by a nearby invariant not visible at the flagged line. Do not report a finding without evidence that a realistic caller can reach the bad state or leak.
+Escalate when the diff touches external boundaries, authorization/tenant isolation, money, irreversible lifecycle transitions, persistence/event atomicity, secrets, unsafe soundness, FFI, misleading public API docs, CI gates that can let broken domain code merge, lint suppressions that hide correctness risks, or production observability. Downgrade when the risk is compile-time contained, test-only, startup-only, internal to a trusted adapter, generated code, private helper docs, advisory CI, or blocked by a nearby invariant not visible at the flagged line. Do not report a finding without evidence that a realistic caller can reach the bad state or leak.
 
 Required evidence:
 

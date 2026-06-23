@@ -20,10 +20,11 @@ Core principles:
 - Keep `unsafe` out of domain logic by default; when unavoidable, hide it behind small safe APIs with documented safety invariants.
 - Keep formatting and lint gates clean for touched Rust code; treat lint suppressions as narrow, justified design decisions.
 - Use rustdoc to document public domain contracts: invariants, errors, transition rules, examples, and safety sections where relevant.
+- Align CI with review assumptions: package validation, format, lint, tests, rustdoc, and risk-tied unsafe/security jobs.
 
 ### `kamae-rs-review`
 
-Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, boundary validation, PII protection, unsafe boundaries, formatting/lints, rustdoc, persistence/events, and tests.
+Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, boundary validation, PII protection, unsafe boundaries, formatting/lints, rustdoc, CI setup, persistence/events, and tests.
 
 ## Packaging
 
