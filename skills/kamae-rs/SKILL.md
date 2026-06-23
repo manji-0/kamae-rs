@@ -39,6 +39,7 @@ Read `Cargo.toml` and the workspace members relevant to the edited files. Note t
 - Boundary/serialization: `serde`; detection-only: `serde_json`, `toml`, `config`
 - Validation/newtype: `validator`, `garde`, `nutype`; detection-only: `derive_more`
 - PII/secrets: `secrecy`; detection-only: `zeroize`
+- Logging/tracing/metrics: `tracing`, `log`, `metrics`; monitoring export base: `opentelemetry`; optional pull exporter: `prometheus`
 - Detection-only persistence: `sqlx`, `diesel`, `sea-orm`
 - Detection-only async: `tokio`, `async-trait`
 
@@ -53,6 +54,7 @@ Read only the topic file(s) needed for the task:
 - Error Handling: [`references/error-handling.md`](./references/error-handling.md)
 - Boundary Defense: [`references/boundary-defense.md`](./references/boundary-defense.md)
 - PII Protection: [`references/pii-protection.md`](./references/pii-protection.md)
+- Logging and Metrics: [`references/logging-metrics.md`](./references/logging-metrics.md)
 - Unsafe Boundaries: [`references/unsafe-boundaries.md`](./references/unsafe-boundaries.md)
 - Formatting and Lints: [`references/fmt-lint.md`](./references/fmt-lint.md)
 - Rustdoc Contracts: [`references/rustdoc.md`](./references/rustdoc.md)
