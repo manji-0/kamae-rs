@@ -30,3 +30,5 @@ Flag use cases that transition state before proving the actor, tenant, account, 
 ## 2.7 Are concurrent transitions protected? - High
 
 Flag lifecycle or balance changes that can race without optimistic locking, version checks, unique constraints, idempotency keys, or serializable transactions.
+
+Cross-check [`aggregate-transactions.md`](./aggregate-transactions.md) for versioned saves and transaction-boundary expectations.

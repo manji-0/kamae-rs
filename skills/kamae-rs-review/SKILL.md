@@ -47,15 +47,17 @@ Use probe output only to choose what to inspect. Do not report a finding until y
 | Diff signal | Load checklists |
 | --- | --- |
 | New/changed domain types, value objects, enums, constructors, mutators, monetary/time/unit fields | `domain-modeling.md`, `state-transitions.md`, `tests.md` |
-| State-machine transitions, lifecycle/status changes, optimistic locking, command handlers | `state-transitions.md`, `persistence-events.md`, `tests.md` |
+| State-machine transitions, lifecycle/status changes, optimistic locking, command handlers | `state-transitions.md`, `aggregate-transactions.md`, `persistence-events.md`, `tests.md` |
 | `Result`, error enums, panics, `unwrap`/`expect`, infrastructure error mapping | `error-handling.md`, `tests.md` |
+| `async fn` use cases, `.await?`, port calls, `try_join`, lock usage across await | `error-handling.md`, `application-wiring.md`, `tests.md` |
+| Use-case structs, handler wiring, repository traits, adapter injection | `application-wiring.md`, `persistence-events.md`, `tests.md` |
 | HTTP/queue/CLI/config/DB input, DTOs, serde derives/defaults, row mapping | `boundary.md`, `domain-modeling.md`, `tests.md` |
 | PII/secrets/tokens, logging, tracing, metrics, errors, `Debug`/`Display` | `pii-protection.md`, `logging-metrics.md`, `tests.md` |
 | `unsafe`, `unsafe fn`, `unsafe impl`, FFI, raw pointers, `MaybeUninit`, `transmute`, safe wrappers | `unsafe-boundaries.md`, `boundary.md`, `tests.md` |
 | `rustfmt`, `clippy`, lint configuration, `#[allow]`, warnings, CI quality gates | `fmt-lint.md`, nearby concern checklist, `tests.md` |
 | Rustdoc, public API docs, `# Errors`, `# Panics`, `# Safety`, doctests, intra-doc links | `rustdoc.md`, nearby concern checklist, `tests.md` |
 | CI workflows, required checks, GitHub Actions, cargo fmt/clippy/test/doc jobs, advisory checks | `ci-setup.md`, `fmt-lint.md`, `tests.md` |
-| Repositories, transactions, DB constraints, outbox/events, retries/idempotency | `persistence-events.md`, `state-transitions.md`, `tests.md` |
+| Repositories, transactions, DB constraints, outbox/events, retries/idempotency | `persistence-events.md`, `aggregate-transactions.md`, `state-transitions.md`, `tests.md` |
 | Test-only helpers, builders, fixtures, compile-fail coverage | `tests.md` |
 
 Use nearby checklists when a diff crosses concerns. Do not load unrelated files just to restate generic advice.
@@ -73,6 +75,8 @@ Use nearby checklists when a diff crosses concerns. Do not load unrelated files 
 - [`checklist/rustdoc.md`](./checklist/rustdoc.md)
 - [`checklist/ci-setup.md`](./checklist/ci-setup.md)
 - [`checklist/persistence-events.md`](./checklist/persistence-events.md)
+- [`checklist/application-wiring.md`](./checklist/application-wiring.md)
+- [`checklist/aggregate-transactions.md`](./checklist/aggregate-transactions.md)
 - [`checklist/tests.md`](./checklist/tests.md)
 
 ## Severity Classes

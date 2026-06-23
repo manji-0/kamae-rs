@@ -16,6 +16,8 @@ Core principles:
 - Make invalid state transitions fail at compile time where practical.
 - Use `Result<T, E>` with domain-specific error enums.
 - Convert external data through DTO/row/config structs before constructing domain types.
+- Wire use cases through small ports and inject adapters at the composition root.
+- Keep aggregate changes inside one transaction boundary per use case when practical.
 - Keep PII and secrets behind redacting wrappers.
 - Keep `unsafe` out of domain logic by default; when unavoidable, hide it behind small safe APIs with documented safety invariants.
 - Keep formatting and lint gates clean for touched Rust code; treat lint suppressions as narrow, justified design decisions.
@@ -24,7 +26,7 @@ Core principles:
 
 ### `kamae-rs-review`
 
-Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, boundary validation, PII protection, unsafe boundaries, formatting/lints, rustdoc, CI setup, persistence/events, and tests.
+Use during Rust code review. It walks severity-tagged checklist files for domain modeling, transitions, error handling, application wiring, aggregate transactions, boundary validation, PII protection, unsafe boundaries, formatting/lints, rustdoc, CI setup, persistence/events, and tests.
 
 ## Packaging
 

@@ -30,6 +30,9 @@ dispatch by boxing returned futures.
 
 When transitions emit domain events, save state changes and outbox rows in the same transaction. Avoid APIs that let callers save state and events in separate operations.
 
+For aggregate roots, optimistic versioning, pessimistic locking, and use-case
+transaction boundaries, see [`aggregate-transactions.md`](./aggregate-transactions.md).
+
 ## Keep Event Records Immutable
 
 Model events as explicit structs or enums. Include identifiers, timestamp, aggregate id, event name/type, and payload. Generate events in the use-case/domain layer, not inside repository persistence code.

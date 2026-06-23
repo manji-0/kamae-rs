@@ -15,6 +15,15 @@ Flag `anyhow::Result`, `eyre::Result`, `Box<dyn Error>`, `String`, or opaque cat
 
 Flag leaking `sqlx::Error`, `diesel::result::Error`, HTTP client errors, or config errors directly through public domain/use-case APIs.
 
-## 3.4 Are error variants meaningful to callers? - Low
+## 3.4 Are async use cases layered correctly? - Medium
+
+Cross-check [`../../kamae-rs/references/error-handling.md`](../../kamae-rs/references/error-handling.md). Flag async domain transitions that perform I/O, `Result<impl Future<...>, E>`-style APIs, or infrastructure error types leaking through `async fn` boundaries without mapping.
+
+## 3.5 Are locks held across await points? - High
+
+Flag mutex guards, database row locks, or other exclusive resources held across
+`.await` in use cases or adapters unless the project explicitly designs for it.
+
+## 3.6 Are error variants meaningful to callers? - Low
 
 Flag vague variants such as `Other(String)` or `InvalidInput(String)` when callers need to branch exhaustively.

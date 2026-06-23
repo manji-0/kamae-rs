@@ -49,6 +49,9 @@ If a dependency is relevant, load the matching file under [`references/crate-gui
 
 Read only the topic file(s) needed for the task:
 
+- Application Wiring: [`references/application-wiring.md`](./references/application-wiring.md)
+- Aggregates and Transactions: [`references/aggregate-transactions.md`](./references/aggregate-transactions.md)
+- Gradual Adoption: [`references/adoption.md`](./references/adoption.md)
 - Domain Modeling: [`references/domain-modeling.md`](./references/domain-modeling.md)
 - State Transitions: [`references/state-modeling.md`](./references/state-modeling.md)
 - Error Handling: [`references/error-handling.md`](./references/error-handling.md)

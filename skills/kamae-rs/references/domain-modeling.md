@@ -51,6 +51,9 @@ An aggregate owns the invariants that must change atomically. Put transition
 methods on the state or aggregate that owns the rule, and reference other
 aggregates by ID unless a use case has loaded a stable snapshot for a decision.
 
+For transaction scope, versioning, and cross-aggregate coordination, see
+[`aggregate-transactions.md`](./aggregate-transactions.md).
+
 Avoid "god" aggregates that collect unrelated entities only to make access
 convenient. Also avoid transitions that mutate two aggregate roots in memory and
 then rely on callers to persist both correctly; use a use case plus explicit
