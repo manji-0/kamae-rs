@@ -113,3 +113,5 @@ cargo test --all-targets --all-features
 ```
 
 If full parity is too slow, document the fast path and the full path separately.
+See [`dev-environment.md`](./dev-environment.md) for toolchain setup, crate
+layout, test layers, fake ports, and the recommended local check loop.

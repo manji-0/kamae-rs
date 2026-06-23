@@ -49,6 +49,10 @@ RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
 See [`skills/kamae-rs/references/ci-setup.md`](./skills/kamae-rs/references/ci-setup.md)
 for the full reasoning behind each job and when to extend the matrix.
 
+Application crates that follow the skill should also read
+[`skills/kamae-rs/references/dev-environment.md`](./skills/kamae-rs/references/dev-environment.md)
+for toolchain setup, crate layout, test layers, and the local check loop.
+
 ## Working on Skills
 
 Skill files live under `skills/`:

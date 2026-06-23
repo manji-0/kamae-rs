@@ -57,6 +57,7 @@ Use probe output only to choose what to inspect. Do not report a finding until y
 | `rustfmt`, `clippy`, lint configuration, `#[allow]`, warnings, CI quality gates | `fmt-lint.md`, nearby concern checklist, `tests.md` |
 | Rustdoc, public API docs, `# Errors`, `# Panics`, `# Safety`, doctests, intra-doc links | `rustdoc.md`, nearby concern checklist, `tests.md` |
 | CI workflows, required checks, GitHub Actions, cargo fmt/clippy/test/doc jobs, advisory checks | `ci-setup.md`, `fmt-lint.md`, `tests.md` |
+| Dev environment, crate layout, fake ports, local test loop, docker-compose, `.env.example` | `dev-environment.md`, `application-wiring.md`, `tests.md` |
 | Repositories, transactions, DB constraints, outbox/events, retries/idempotency | `persistence-events.md`, `aggregate-transactions.md`, `state-transitions.md`, `tests.md` |
 | `Stream`, projections, outbox polling, continuous queries, event subscriptions | `stream-continuous-queries.md`, `persistence-events.md`, `service-boundaries.md`, `tests.md` |
 | proc-macro, derive macro, `macro_rules!`, generated newtype/event impls | `domain-macros.md`, `domain-modeling.md`, `boundary.md`, `tests.md` |
@@ -79,6 +80,7 @@ Use nearby checklists when a diff crosses concerns. Do not load unrelated files 
 - [`checklist/fmt-lint.md`](./checklist/fmt-lint.md)
 - [`checklist/rustdoc.md`](./checklist/rustdoc.md)
 - [`checklist/ci-setup.md`](./checklist/ci-setup.md)
+- [`checklist/dev-environment.md`](./checklist/dev-environment.md)
 - [`checklist/persistence-events.md`](./checklist/persistence-events.md)
 - [`checklist/stream-continuous-queries.md`](./checklist/stream-continuous-queries.md)
 - [`checklist/domain-macros.md`](./checklist/domain-macros.md)

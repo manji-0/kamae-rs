@@ -7,6 +7,8 @@ description: |
   validation, PII handling, safe wrappers around unsafe/FFI boundaries,
   rustfmt/clippy quality gates, rustdoc API contracts for domain code,
   CI setup for Rust domain checks, business logic, or review-adjacent remediation.
+  Use when bootstrapping or documenting a local dev/test environment for
+  Kamae-style Rust domain crates.
   Applies to server-side Rust crates, backend services, domain crates, and CLIs
   with business rules. Skip frontend assets, build scripts, pure infrastructure,
   low-level unsafe/performance tuning unrelated to domain boundaries, and code
@@ -65,6 +67,7 @@ Read only the topic file(s) needed for the task:
 - Formatting and Lints: [`references/fmt-lint.md`](./references/fmt-lint.md)
 - Rustdoc Contracts: [`references/rustdoc.md`](./references/rustdoc.md)
 - CI Setup: [`references/ci-setup.md`](./references/ci-setup.md)
+- Development Environment: [`references/dev-environment.md`](./references/dev-environment.md)
 - Persistence and Events: [`references/persistence-events.md`](./references/persistence-events.md)
 - Streams and Continuous Queries: [`references/stream-continuous-queries.md`](./references/stream-continuous-queries.md)
 - Domain Macros: [`references/domain-macros.md`](./references/domain-macros.md)

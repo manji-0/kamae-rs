@@ -41,6 +41,8 @@ Run `python3 scripts/validate_package.py` before publishing or sharing a package
 
 Run `python3 scripts/review_probe.py <path>` to collect review leads from Rust files before walking the review checklist. The probe is intentionally conservative: it highlights patterns for human/agent inspection and does not produce findings by itself.
 
+For implementing and testing domain code in application crates, see [`skills/kamae-rs/references/dev-environment.md`](./skills/kamae-rs/references/dev-environment.md).
+
 ## Customization
 Rules live under `.claude/rules/`, `.codex/rules/`, user-level rule directories, or this repo's `rules/defaults/`. See [`rules/README.md`](./rules/README.md).
 
