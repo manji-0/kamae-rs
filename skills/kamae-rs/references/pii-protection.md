@@ -3,9 +3,10 @@
 ## Make Sensitive Data Hard to Log
 
 Use a redacting wrapper or a typed value object by default for personal data.
-Use `secrecy::SecretString` or `SecretBox<T>` for credentials, API keys,
-tokens, passwords, cryptographic material, or values whose normal workflows
-need explicit plaintext exposure.
+Reserve `secrecy::SecretString` or `SecretBox<T>` for credentials, API keys,
+tokens, passwords, and cryptographic material. General PII such as names or
+email addresses usually belongs in `Redacted<T>` or a domain newtype with a
+safe `Debug` implementation, not in `secrecy`.
 
 PII examples include names, email addresses, phone numbers, addresses, government IDs, payment identifiers, health data, IP addresses, and precise location data.
 

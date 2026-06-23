@@ -80,4 +80,4 @@ These are strong defaults, not absolutes. If existing project conventions confli
 
 ## Examples
 
-Read [`examples/taxi-request.rs`](./examples/taxi-request.rs) only when a concrete state-transition example would clarify the task.
+Read [`examples/taxi-request.rs`](./examples/taxi-request.rs) only when a concrete state-transition example would clarify the task. The example intentionally omits rustdoc; follow [`references/rustdoc.md`](./references/rustdoc.md) for production public APIs.

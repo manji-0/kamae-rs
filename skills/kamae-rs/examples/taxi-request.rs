@@ -94,9 +94,9 @@ pub enum DomainError {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub struct Transition<TState> {
+pub struct Transition<TState, TEvent> {
     pub state: TState,
-    pub events: Vec<TaxiRequestEvent>,
+    pub events: Vec<TEvent>,
 }
 
 impl DriverAssignment {
@@ -124,7 +124,7 @@ impl WaitingRequest {
     pub fn assign_driver(
         self,
         driver: DriverAssignment,
-    ) -> Result<Transition<EnRouteRequest>, DomainError> {
+    ) -> Result<Transition<EnRouteRequest, TaxiRequestEvent>, DomainError> {
         if self.requires_accessible_vehicle && !driver.accepts_accessibility_requests {
             return Err(DomainError::DriverCannotServeAccessibilityRequest);
         }

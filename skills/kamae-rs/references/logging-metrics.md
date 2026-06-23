@@ -206,22 +206,49 @@ names over raw IDs or timestamps as label values.
 
 ## Export Telemetry Through OpenTelemetry
 
-Use OpenTelemetry as the default path for sending logs, metrics, and traces to
-observability backends. Instrument domain code with the `tracing` / `metrics`
-facades and let the OpenTelemetry SDK and exporters route data.
-
-Pull-style endpoints such as `/metrics` for a Prometheus exporter are optional.
-Provide them only when the deployment environment requires Prometheus scraping.
-Do not design the domain or application layer around a specific exporter; keep
-the instrumentation facade-agnostic and configure exporters at application
+Use OpenTelemetry as the default application-level path for exporting logs,
+metrics, and traces to observability backends. Keep domain and use-case code on
+facade APIs (`tracing`, `metrics`) and wire exporters only at application
 startup.
+
+Facades do not connect to OpenTelemetry automatically. Install bridge crates at
+startup:
+
+- `tracing` spans/traces: `tracing-opentelemetry` or an equivalent project choice
+- `metrics` instruments: `metrics-exporter-otel`, `metrics-opentelemetry`, or
+  another recorder that forwards to an OpenTelemetry `Meter`
+
+Pull-style `/metrics` endpoints for Prometheus scraping are optional. Prefer
+OTLP export through the OpenTelemetry SDK when the deployment supports it; add a
+Prometheus text exporter only when scraping is required. The legacy
+`opentelemetry-prometheus` crate is deprecated; for Prometheus text exposition,
+prefer `opentelemetry-prometheus-text-exporter` or route OTLP metrics through a
+collector.
+
+Do not design the domain or application layer around a specific exporter.
 
 ```rust
 // Application startup, not domain code.
+use opentelemetry::global;
+use opentelemetry::metrics::MeterProvider;
+use opentelemetry_sdk::metrics::SdkMeterProvider;
+use opentelemetry_prometheus_text_exporter::PrometheusExporter;
+
+// Bridge `metrics` facade recordings into OpenTelemetry.
+use metrics_exporter_otel::OpenTelemetryRecorder;
+
+let exporter = PrometheusExporter::builder().build();
 let provider = SdkMeterProvider::builder()
-    .with_reader(PrometheusExporter::builder().build())
+    .with_reader(exporter)
     .build();
-global::set_meter_provider(provider);
+
+let meter = provider.meter(env!("CARGO_PKG_NAME"));
+let recorder = OpenTelemetryRecorder::new(meter);
+metrics::set_global_recorder(recorder).expect("install metrics recorder");
+
+global::set_meter_provider(provider.clone());
+
+// For `tracing`, install a `tracing-opentelemetry` layer separately.
 ```
 
 ## Correlate Logs and Metrics
