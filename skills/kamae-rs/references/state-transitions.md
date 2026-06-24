@@ -1,4 +1,4 @@
-# Rust State Modeling
+# Rust State Transitions
 
 ## Constrain Transitions by Source Type
 

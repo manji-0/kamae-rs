@@ -1,5 +1,5 @@
 # State Transitions Checklist
-Reference: [`../../kamae-rs/references/state-modeling.md`](../../kamae-rs/references/state-modeling.md).
+Reference: [`../../kamae-rs/references/state-transitions.md`](../../kamae-rs/references/state-transitions.md).
 
 ## 2.1 Do transition functions constrain source state by type? - Medium
 

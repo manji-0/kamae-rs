@@ -2,7 +2,7 @@
 
 <!-- constrained-by ./test-data.md -->
 <!-- constrained-by ./domain-modeling.md -->
-<!-- constrained-by ./state-modeling.md -->
+<!-- constrained-by ./state-transitions.md -->
 
 ## When Property Tests Earn Their Cost
 
@@ -52,7 +52,12 @@ fn valid_request_id() -> impl Strategy<Value = RequestId> {
 proptest! {
     #[test]
     fn request_id_rejects_empty(input in "\\PC*") {
-        prop_assume!(!input.trim().is_empty());
+        prop_assume!(input.trim().is_empty());
+        prop_assert!(RequestId::new(input).is_err());
+    }
+
+    #[test]
+    fn request_id_accepts_non_empty(input in "[1-9][0-9]{0,15}") {
         prop_assert!(RequestId::new(input).is_ok());
     }
 }

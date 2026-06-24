@@ -48,17 +48,19 @@ Read `Cargo.toml` and the workspace members relevant to the edited files. Note t
 - Detection-only resilience: `tower`, `governor`
 - Detection-only testing: `proptest`, `quickcheck`, `proptest-regressions`, `trybuild`
 
-If a dependency is relevant, load the matching file under [`references/crate-guides/`](./references/crate-guides/). If no crate guide matches, use standard-library Rust idioms before introducing a new dependency.
+If a dependency is relevant, load the matching file under [`references/crate-guides/`](./references/crate-guides/). Crate guides cover crate-specific defaults only; prefer the matching topic guide under `references/` for full patterns. If no crate guide matches, use standard-library Rust idioms before introducing a new dependency.
 
 ## Step 2: Load Topic Guides
 
-Read only the topic file(s) needed for the task:
+Read only the topic file(s) needed for the task. Some topic files include
+`constrained-by` HTML comments at the top; load those related guides when
+applying the primary topic.
 
 - Application Wiring: [`references/application-wiring.md`](./references/application-wiring.md)
 - Aggregates and Transactions: [`references/aggregate-transactions.md`](./references/aggregate-transactions.md)
 - Gradual Adoption: [`references/adoption.md`](./references/adoption.md)
 - Domain Modeling: [`references/domain-modeling.md`](./references/domain-modeling.md)
-- State Transitions: [`references/state-modeling.md`](./references/state-modeling.md)
+- State Transitions: [`references/state-transitions.md`](./references/state-transitions.md)
 - Error Handling: [`references/error-handling.md`](./references/error-handling.md)
 - Boundary Defense: [`references/boundary-defense.md`](./references/boundary-defense.md)
 - PII Protection: [`references/pii-protection.md`](./references/pii-protection.md)

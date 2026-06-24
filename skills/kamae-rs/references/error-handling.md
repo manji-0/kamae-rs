@@ -58,31 +58,10 @@ Keep layers distinct:
 Domain transitions should stay synchronous and pure when possible. Async belongs
 in use cases and adapters that perform I/O.
 
-```rust
-pub async fn execute(
-    &self,
-    request_id: RequestId,
-    driver: DriverAssignment,
-) -> Result<(), AssignDriverError> {
-    let waiting = self
-        .resolver
-        .find_waiting(&request_id)
-        .await
-        .map_err(AssignDriverError::Repository)?
-        .ok_or(AssignDriverError::RequestNotFound { request_id })?;
-
-    let transition = waiting
-        .assign_driver(driver)
-        .map_err(AssignDriverError::Domain)?;
-
-    self.store
-        .save_assigned(&transition.state, &transition.events)
-        .await
-        .map_err(AssignDriverError::Repository)?;
-
-    Ok(())
-}
-```
+See [`application-wiring.md`](./application-wiring.md#model-use-cases-as-structs-with-dependencies)
+for the canonical `AssignDriver` async use-case shape. The pattern is:
+load through a port, run a pure domain transition, then persist through another
+port — mapping infrastructure errors at each `.await` site.
 
 Guidelines:
 

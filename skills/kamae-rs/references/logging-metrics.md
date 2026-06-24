@@ -1,7 +1,7 @@
 # Rust Logging and Metrics
 
 <!-- constrained-by ./pii-protection.md -->
-<!-- constrained-by ./state-modeling.md -->
+<!-- constrained-by ./state-transitions.md -->
 <!-- constrained-by ./error-handling.md -->
 
 ## Log with Domain Context

@@ -1,6 +1,10 @@
 # thiserror
 
-Use `thiserror` for domain-specific error enums when the crate already depends on it or when introducing a small, conventional error derive is acceptable.
+For full patterns, prefer [`../error-handling.md`](../error-handling.md). This
+file covers crate-specific defaults only.
+
+Use `thiserror` for domain-specific error enums when the crate already depends
+on it or when introducing a small, conventional error derive is acceptable.
 
 ```rust
 #[derive(Debug, thiserror::Error)]

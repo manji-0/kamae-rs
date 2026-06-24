@@ -1,5 +1,8 @@
 # secrecy
 
+For full patterns, prefer [`../pii-protection.md`](../pii-protection.md). This
+file covers crate-specific defaults only.
+
 Use `secrecy` for credentials and other secrets that must not appear in `Debug`
 output or linger in memory longer than necessary. Prefer `Redacted<T>` or domain
 newtypes with custom `Debug` for personal data (see `pii-protection.md`).

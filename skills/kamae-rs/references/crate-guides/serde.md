@@ -1,5 +1,8 @@
 # serde
 
+For full patterns, prefer [`../boundary-defense.md`](../boundary-defense.md).
+This file covers crate-specific defaults only.
+
 Use `serde` DTOs for external shapes and convert them into domain types.
 
 Avoid putting `Deserialize` directly on domain entities when deserialization can bypass validation or allow impossible states.

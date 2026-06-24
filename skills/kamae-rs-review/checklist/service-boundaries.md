@@ -2,32 +2,32 @@
 
 Reference: [`../../kamae-rs/references/service-boundaries.md`](../../kamae-rs/references/service-boundaries.md).
 
-## 17.1 Are wire messages converted through DTO -> domain? - High
+## 15.1 Are wire messages converted through DTO -> domain? - High
 
 Flag handlers that pass protobuf, JSON, or queue payloads directly into domain
 logic without `TryFrom` validation.
 
-## 17.2 Do generated client types leak into domain crates? - Medium
+## 15.2 Do generated client types leak into domain crates? - Medium
 
 Flag domain or use-case modules importing `tonic`/`prost` generated types
 instead of mapping at the adapter edge.
 
-## 17.3 Is protobuf/JSON schema evolution explicit? - High
+## 15.3 Is protobuf/JSON schema evolution explicit? - High
 
 Flag breaking field renames/removals, missing `schema_version`, or consumers that
 panic on unknown event types or versions.
 
-## 17.4 Are queue handlers idempotent? - High
+## 15.4 Are queue handlers idempotent? - High
 
 Cross-check [`persistence-events.md`](./persistence-events.md). Flag consumers
 that apply side effects without idempotency keys or dedupe storage.
 
-## 17.5 Are retries, breakers, and rate limits in adapters? - Medium
+## 15.5 Are retries, breakers, and rate limits in adapters? - Medium
 
 Flag retry loops, circuit-breaker state, or rate limiting inside domain
 transitions or use-case business rules.
 
-## 17.6 Is correlation context propagated on outbound calls? - Low
+## 15.6 Is correlation context propagated on outbound calls? - Low
 
 Flag cross-service calls or published messages that omit `correlation_id` or
 trace context when the ingress request already carried it.

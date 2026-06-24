@@ -1,7 +1,7 @@
 # Rust Aggregates and Transaction Boundaries
 
 <!-- constrained-by ./domain-modeling.md -->
-<!-- constrained-by ./state-modeling.md -->
+<!-- constrained-by ./state-transitions.md -->
 <!-- constrained-by ./persistence-events.md -->
 <!-- constrained-by ./application-wiring.md -->
 
@@ -117,7 +117,7 @@ case should name the business steps.
 ## Idempotency Belongs Near the Boundary
 
 Commands that may retry (HTTP clients, queue consumers, outbox processors)
-should carry an `CommandId` or idempotency key. Persist it with the state change
+should carry a `CommandId` or idempotency key. Persist it with the state change
 or in a dedupe table so a duplicate delivery does not apply the transition twice.
 
 Treat idempotency as part of the transaction story, not as an afterthought in

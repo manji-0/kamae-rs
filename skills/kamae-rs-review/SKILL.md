@@ -13,6 +13,7 @@ description: |
 ---
 
 # Kamae Rust Review
+
 Review Rust code against the knowledge base in `../kamae-rs/`. Prioritize bugs, invalid states, data leaks, and missing tests over style.
 
 ## Step 0: Load Applicable Rules
@@ -35,6 +36,42 @@ Skip rules unless `applies-to` is `kamae-rs-review` or `*`. A `check-toggle` rul
    - Full adversarial review: walk every checklist below in order.
    - Small/targeted diff: load only checklist files matched by the routing matrix, plus `tests.md` when behavior changes.
 6. Report findings first, ordered by severity. Include `path:line`, risk, principle reference, evidence, and a concrete fix.
+
+Example finding:
+
+```text
+High — src/application/assign_driver.rs:42
+Principle: error-handling §Avoid Panics in Domain Code
+Evidence: `waiting.unwrap()` after `find_waiting` returns `Option`; a missing row panics in production.
+Fix: use `.ok_or(AssignDriverError::RequestNotFound { request_id })?` instead.
+```
+
+## Document Map
+
+Checklist item numbers (`N.M`) match the checklist order below. Each checklist
+links to its topic guide under `../kamae-rs/references/`.
+
+| # | Checklist | Topic guide |
+| --- | --- | --- |
+| 1 | `domain-modeling.md` | `domain-modeling.md` |
+| 2 | `state-transitions.md` | `state-transitions.md` |
+| 3 | `error-handling.md` | `error-handling.md` |
+| 4 | `boundary.md` | `boundary-defense.md` |
+| 5 | `pii-protection.md` | `pii-protection.md` |
+| 6 | `logging-metrics.md` | `logging-metrics.md` |
+| 7 | `unsafe-boundaries.md` | `unsafe-boundaries.md` |
+| 8 | `fmt-lint.md` | `fmt-lint.md` |
+| 9 | `rustdoc.md` | `rustdoc.md` |
+| 10 | `ci-setup.md` | `ci-setup.md` |
+| 11 | `dev-environment.md` | `dev-environment.md` |
+| 12 | `persistence-events.md` | `persistence-events.md` |
+| 13 | `stream-continuous-queries.md` | `stream-continuous-queries.md` |
+| 14 | `domain-macros.md` | `domain-macros.md` |
+| 15 | `service-boundaries.md` | `service-boundaries.md` |
+| 16 | `property-based-tests.md` | `property-based-tests.md` |
+| 17 | `application-wiring.md` | `application-wiring.md` |
+| 18 | `aggregate-transactions.md` | `aggregate-transactions.md` |
+| 19 | `tests.md` | `test-data.md`, `property-based-tests.md` |
 
 ## Review Probe
 
