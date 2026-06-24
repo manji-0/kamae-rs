@@ -37,5 +37,5 @@ jobs:
         run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
 
       - name: Kamae review probe
-        run: python3 path/to/kamae-rs/scripts/review_probe.py src/ --json
+        run: cargo run -q --manifest-path path/to/kamae-rs/Cargo.toml -p kamae-review-probe -- src/ --json
         continue-on-error: true

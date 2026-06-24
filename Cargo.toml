@@ -1,5 +1,5 @@
 [workspace]
-members = ["skills/kamae-rs/examples"]
+members = ["skills/kamae-rs/examples", "crates/review-probe"]
 resolver = "2"
 
 [workspace.package]

@@ -240,7 +240,7 @@ When the project vendors or installs the kamae-rs plugin, run the review probe
 on changed Rust files before requesting review:
 
 ```bash
-python3 path/to/kamae-rs/scripts/review_probe.py src/domain/ src/application/
+cargo run -q --manifest-path path/to/kamae-rs/Cargo.toml -p kamae-review-probe -- src/domain/ src/application/
 ```
 
 Treat probe output as review leads, not automatic failures. For first-time

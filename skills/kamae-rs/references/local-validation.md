@@ -27,7 +27,7 @@ The script does not overwrite existing files unless `--force` is set. Use `--dry
 After bootstrapping, run the bundled review probe on domain directories to catch common Kamae stance issues before they reach review:
 
 ```bash
-python3 path/to/kamae-rs/scripts/review_probe.py src/domain/ src/application/
+cargo run -q --manifest-path path/to/kamae-rs/Cargo.toml -p kamae-review-probe -- src/domain/ src/application/
 ```
 
 The probe is advisory by default. Treat its output as review leads for panics, unsafe boundaries, serde derives, PII terms, and rustdoc gaps — not as a failing gate unless your team wires it that way.

@@ -32,12 +32,12 @@ The script is non-destructive by default; use `--dry-run` to preview and `--forc
 You can also add the Kamae review probe to CI or pre-push hooks:
 
 ```bash
-python3 path/to/kamae-rs/scripts/review_probe.py src/domain/ src/application/ --json
+cargo run -q --manifest-path path/to/kamae-rs/Cargo.toml -p kamae-review-probe -- src/domain/ src/application/ --json
 ```
 
 The probe is advisory by default. Use it to surface review leads for panics, unsafe code, serde derives, and PII terms — not as a required merge gate unless your team documents that policy.
 
-After copying templates, replace `path/to/kamae-rs` in workflow steps with the installed skill path or vendor the script into your repository.
+After copying templates, replace `path/to/kamae-rs` in workflow steps with the installed skill path or vendor the `crates/review-probe` crate into your repository.
 
 Recommended workflow for skill/plugin repositories:
 
@@ -66,9 +66,6 @@ jobs:
       - name: Validate skill package
         run: python3 scripts/validate_package.py
 
-      - name: Smoke review probe
-        run: python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
-
   rust:
     name: Rust checks
     runs-on: ubuntu-latest
@@ -83,6 +80,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
+
+      - name: Smoke review probe
+        run: cargo run -q -p kamae-review-probe -- skills/kamae-rs/examples/taxi-request.rs --json
 
       - name: Format
         run: cargo fmt --all -- --check
@@ -116,7 +116,7 @@ For this skill package, also run:
 
 ```bash
 python3 scripts/validate_package.py
-python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
+cargo run -q -p kamae-review-probe -- skills/kamae-rs/examples/taxi-request.rs --json
 cargo fmt --all -- --check
 cargo clippy --all-targets -- -D warnings
 cargo test --all-targets

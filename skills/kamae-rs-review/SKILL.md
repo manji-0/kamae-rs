@@ -30,7 +30,7 @@ Skip rules unless `applies-to` is `kamae-rs-review` or `*`. A `check-toggle` rul
 
 1. Read [`../kamae-rs/SKILL.md`](../kamae-rs/SKILL.md).
 2. Read `Cargo.toml` and relevant crate guides under `../kamae-rs/references/crate-guides/`.
-3. If available, run `python3 scripts/review_probe.py <changed Rust paths>` from the repository root. Treat the output as review leads, not findings.
+3. If available, run `cargo run -p kamae-review-probe -- <changed Rust paths>` from the repository root (or `--manifest-path path/to/kamae-rs/Cargo.toml` in application crates). Treat the output as review leads, not findings.
 4. Read the Rust files under review.
 5. Choose checklist scope:
    - Full adversarial review: walk every checklist below in order.
@@ -75,7 +75,7 @@ links to its topic guide under `../kamae-rs/references/`.
 
 ## Review Probe
 
-The optional probe at [`../../scripts/review_probe.py`](../../scripts/review_probe.py) scans Rust files for patterns that commonly route to Kamae checklists: unsafe boundaries, lint suppressions, panics, serde/row derives, PII terms, persistence/event code, async operational risks, and rustdoc contract gaps.
+The optional probe at [`../../crates/review-probe`](../../crates/review-probe) parses Rust files with `syn` and collects patterns that commonly route to Kamae checklists: unsafe boundaries, lint suppressions, panics, serde/row derives, PII terms, persistence/event code, async operational risks, and rustdoc contract gaps.
 
 Use probe output only to choose what to inspect. Do not report a finding until you have read the relevant code and confirmed a reachable invariant break, leak, unsoundness risk, or project-policy violation.
 

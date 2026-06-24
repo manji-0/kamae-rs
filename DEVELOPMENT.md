@@ -33,7 +33,7 @@ checks that CI runs before pushing:
 python3 scripts/validate_package.py
 
 # Review probe smoke test
-python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
+cargo run -q -p kamae-review-probe -- skills/kamae-rs/examples/taxi-request.rs --json
 
 # Skill example crate (taxi-request)
 cargo fmt --all -- --check

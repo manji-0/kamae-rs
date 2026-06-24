@@ -39,7 +39,7 @@ Run `python3 scripts/validate_package.py` before publishing or sharing a package
 
 ## Review Tools
 
-Run `python3 scripts/review_probe.py <path>` to collect review leads from Rust files before walking the review checklist. The probe is intentionally conservative: it highlights patterns for human/agent inspection and does not produce findings by itself.
+Run `cargo run -p kamae-review-probe -- <path>` to collect review leads from Rust files before walking the review checklist. The probe parses source with `syn` and is intentionally conservative: it highlights patterns for human/agent inspection and does not produce findings by itself.
 
 For implementing and testing domain code in application crates, see [`skills/kamae-rs/references/dev-environment.md`](./skills/kamae-rs/references/dev-environment.md).
 

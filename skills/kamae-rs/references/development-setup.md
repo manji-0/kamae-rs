@@ -7,7 +7,7 @@
 ## Prerequisites
 
 - [Rust](https://www.rust-lang.org/tools/install) toolchain with `rustfmt`, `clippy`, and `rustdoc` (optional for skill-only edits)
-- Python 3 (used for package validation, template application, and the review probe)
+- Python 3 (used for package validation and template application)
 
 ## Clone and Bootstrap
 
@@ -23,7 +23,7 @@ If the repository also contains Rust domain code under a crate, install the tool
 
 ```bash
 python3 scripts/validate_package.py
-python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
+cargo run -q -p kamae-review-probe -- skills/kamae-rs/examples/taxi-request.rs --json
 ```
 
 Package validation should pass before you make changes.
@@ -34,7 +34,7 @@ Run the baseline commands in [`quality-gates.md`](./quality-gates.md). For this 
 
 ```bash
 python3 scripts/validate_package.py
-python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
+cargo run -q -p kamae-review-probe -- skills/kamae-rs/examples/taxi-request.rs --json
 cargo fmt --all -- --check
 cargo clippy --all-targets -- -D warnings
 cargo test --all-targets
@@ -53,7 +53,7 @@ The skill lives under `skills/kamae-rs/`:
 
 When you add a new reference document, link to it from `SKILL.md` so the skill dispatcher surfaces it. Prefer relative links so `scripts/validate_package.py` can check them.
 
-When you change `scripts/review_probe.py` or `scripts/validate_package.py`, run `python3 scripts/validate_package.py` before committing.
+When you change `crates/review-probe` or `scripts/validate_package.py`, run `python3 scripts/validate_package.py` and `cargo test -p kamae-review-probe` before committing.
 
 ## Apply Templates for Testing
 

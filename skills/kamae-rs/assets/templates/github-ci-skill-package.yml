@@ -22,9 +22,6 @@ jobs:
       - name: Validate skill package
         run: python3 scripts/validate_package.py
 
-      - name: Smoke review probe
-        run: python3 path/to/kamae-rs/scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
-
   rust:
     name: Rust checks
     runs-on: ubuntu-latest
@@ -39,6 +36,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
+
+      - name: Smoke review probe
+        run: cargo run -q --manifest-path path/to/kamae-rs/Cargo.toml -p kamae-review-probe -- skills/kamae-rs/examples/taxi-request.rs --json
 
       - name: Format
         run: cargo fmt --all -- --check

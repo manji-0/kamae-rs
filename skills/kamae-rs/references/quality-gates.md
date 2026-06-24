@@ -32,15 +32,15 @@ Skill/plugin repositories should also run:
 
 ```bash
 python3 scripts/validate_package.py
-python3 path/to/kamae-rs/scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
+cargo run -q --manifest-path path/to/kamae-rs/Cargo.toml -p kamae-review-probe -- skills/kamae-rs/examples/taxi-request.rs --json
 ```
 
-In the **kamae-rs** repository itself, use `scripts/validate_package.py` and `scripts/review_probe.py`. Example code lives in the workspace crate `kamae-rs-taxi-request` under `skills/kamae-rs/examples/`; run `cargo test --all-targets` from the repository root. See [`development-setup.md`](./development-setup.md) for this repo's dev workflow.
+In the **kamae-rs** repository itself, use `scripts/validate_package.py` and `cargo run -p kamae-review-probe`. Example code lives in the workspace crate `kamae-rs-taxi-request` under `skills/kamae-rs/examples/`; run `cargo test --all-targets` from the repository root. See [`development-setup.md`](./development-setup.md) for this repo's dev workflow.
 
 Application crates that install the skill may add the probe to CI or pre-push hooks when domain directories change:
 
 ```bash
-python3 path/to/kamae-rs/scripts/review_probe.py src/domain/ src/application/
+cargo run -q --manifest-path path/to/kamae-rs/Cargo.toml -p kamae-review-probe -- src/domain/ src/application/
 ```
 
 ## Clippy Signals That Matter for Domain Safety
