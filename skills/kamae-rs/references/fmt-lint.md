@@ -18,6 +18,54 @@ cargo clippy --all-targets --all-features -- -D warnings
 
 Adjust features, packages, or warning policy to match the repository. Do not introduce a stricter global lint policy casually in an unrelated change.
 
+## Workspace Lint Unification
+
+For workspaces with multiple domain crates, centralize lint policy so adapters and domain crates share the same bar.
+
+### Root `Cargo.toml` — inherited lints (Rust 1.74+)
+
+```toml
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "allow"  # enable per crate when ready
+
+[workspace.lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
+panic = "warn"
+todo = "warn"
+wildcard_enum_match_arm = "warn"
+float_cmp = "warn"
+
+[package]
+name = "booking-domain"
+# ...
+
+[lints]
+workspace = true
+```
+
+Member crates use `[lints] workspace = true` to inherit. Tighten one crate (e.g. `booking-domain`) with additional `deny` lints without copying the full list.
+
+### `clippy.toml` recommendations
+
+Place at workspace root:
+
+```toml
+# Reject short, ambiguous names in public domain APIs
+min-ident-chars-threshold = 2
+
+# Catch accidental float usage in money-like names (project-specific)
+disallowed-names = ["foo", "bar", "baz"]
+
+# If the codebase standardizes on a money newtype:
+# cognitive-complexity-threshold = 25
+```
+
+Add `disallowed-methods` or `disallowed-types` when the team bans `f64` for currency in domain crates (requires nightly or custom lint discipline via review).
+
+Pair `clippy.toml` with CI running the same flags as local dev. See [`ci-setup.md`](./ci-setup.md).
+
 ## Lints That Matter for Domain Safety
 
 Pay special attention to lints and patterns that can hide invalid states or operational failures:
@@ -64,3 +112,11 @@ Prefer CI jobs that run the baseline commands in [`quality-gates.md`](./quality-
 - tests relevant to domain constructors, transitions, boundary conversion, unsafe wrappers, and persistence behavior
 
 When a project cannot run full workspace checks quickly, run the smallest package/feature set that covers the changed code and state the limitation. See [`ci-setup.md`](./ci-setup.md) for workflow templates and branch protection.
+
+## Common Crate Combinations
+
+| Goal | Approach |
+| --- | --- |
+| Uniform domain bar | `[workspace.lints]` + `workspace = true` in each member |
+| Stricter domain crate only | Override `unwrap_used = "deny"` in `booking-domain/Cargo.toml` |
+| Generated prost/FFI | `#[allow(...)]` on generated module; lint the safe wrapper crate |

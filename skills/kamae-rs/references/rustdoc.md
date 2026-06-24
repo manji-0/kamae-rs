@@ -62,6 +62,47 @@ For examples that need crate setup, external services, feature flags, or intenti
 
 Use `compile_fail` examples sparingly for important type-state guarantees. Keep them small and stable.
 
+### Doctest error handling
+
+Show how callers should handle `Result` variants — doctests are contracts for failure paths too.
+
+```rust
+/// ```
+/// use booking_domain::RequestId;
+///
+/// let id = RequestId::new("req-1".into())?;
+/// assert_eq!(id.as_str(), "req-1");
+/// # Ok::<(), booking_domain::RequestIdError>(())
+/// ```
+```
+
+Rules:
+
+- End fallible doctests with `# Ok::<(), ErrorType>(())` so `?` works inside the example.
+- Prefer one happy path per example; document error variants in `# Errors` with links to enum variants.
+- For `compile_fail`, keep the failing line minimal (e.g. calling a transition on the wrong state type).
+
+```rust
+/// # Errors
+///
+/// Returns [`AssignDriverError::InvalidState`] when the request is not waiting.
+```
+
+Do not use `unwrap()` in public doctests unless the example explicitly documents panic-oriented APIs.
+
+## `#[doc(hidden)]` — When to Use
+
+Hide items from the public rustdoc index while keeping them available for macros, tests, or internal crates:
+
+- **Sealed traits** and trait impl hooks used only to prevent downstream impls.
+- **Macro expansion helpers** not meant for direct use.
+- **Test-only re-exports** when `cfg(test)` is not enough for doc visibility.
+- **FFI shims** when the safe wrapper is the documented surface.
+
+Do not use `#[doc(hidden)]` to avoid documenting public API the team actually ships. Hidden items still appear in rustdoc with `--document-hidden-items` and are part of the semver story if public.
+
+Prefer `pub(crate)` for truly internal items. Use `#[doc(hidden)]` when something must be `pub` for technical reasons but should not appear in the default docs index.
+
 ## Link Domain Types
 
 Use rustdoc intra-doc links for nearby domain concepts and error variants:
@@ -83,3 +124,11 @@ If a type intentionally redacts `Debug` or serialization, mention that contract 
 Prefer enabling `#![deny(rustdoc::broken_intra_doc_links)]` for library crates. Consider `#![warn(missing_docs)]` only for public library APIs where the team is ready to maintain docs; do not impose it casually on application crates.
 
 Generated, vendored, or FFI binding modules may be exempt, but safe wrappers around them should still document the domain and safety contract.
+
+## Common Crate Combinations
+
+| Stack | Rustdoc focus |
+| --- | --- |
+| `thiserror` enums | `# Errors` links to `#[error]` variants |
+| State transitions | `# Examples` with `?` and `Transition` outcome |
+| `unsafe` adapters | `# Safety` on `unsafe fn`; safe fn documents preconditions |

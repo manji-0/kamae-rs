@@ -35,3 +35,12 @@ types, commands, and anything where multiple fields must be validated together.
 Do not derive unrestricted `Serialize` or `Deserialize` on invariant-bearing
 types just because it is convenient for tests or persistence. If the serialized
 form is not a public contract, keep it in a DTO or row type.
+
+## Common Combinations
+
+| Stack | Pattern | Topic guide |
+| --- | --- | --- |
+| `serde` + `thiserror` | DTO `Deserialize`, `TryFrom` returns typed error enum | [`boundary-defense.md`](../boundary-defense.md) |
+| `serde` + `sqlx` | `FromRow` on row struct only; `TryFrom` into domain | [`boundary-defense.md`](../boundary-defense.md#database-rows-sqlxfromrow), [`persistence-events.md`](../persistence-events.md) |
+| `serde` + events | `#[serde(tag = "event_type")]` on domain event enum | [`persistence-events.md`](../persistence-events.md#event-serde-representation) |
+| `serde` + `garde` | Validate DTO with `garde` before `TryFrom` | [`crate-guides/garde.md`](./garde.md) |

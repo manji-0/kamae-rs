@@ -12,3 +12,11 @@ Store secrets as `SecretString` or project-specific wrappers around
 `ExposeSecret`.
 
 Avoid including exposed secret values in error variants.
+
+## Common Combinations
+
+| Stack | Pattern | Topic guide |
+| --- | --- | --- |
+| `secrecy` + adapter | `ExposeSecret` only in payment/auth module | [`pii-protection.md`](../pii-protection.md) |
+| `secrecy` + `tracing` | Never log `SecretString`; use `skip` on credential structs | [`pii-protection.md`](../pii-protection.md#tracing-and-span-fields) |
+| PII vs secrets | Personal data in `Redacted<T>`, credentials in `secrecy` | [`pii-protection.md`](../pii-protection.md#secrecy-vs-redactedt--when-to-use-which) |

@@ -52,6 +52,73 @@ new handler    -> AssignDriver use case -> port -> adapter -> DB
 
 Prefer one aggregate or one endpoint per migration slice.
 
+## Step-by-Step Legacy Roadmap
+
+Example: migrating `POST /requests/{id}/assign` in a monolithic axum + sqlx service.
+
+### Phase 1 — Freeze behavior, add tests (week 1)
+
+1. Capture current HTTP contract with integration tests (status codes, JSON shape).
+2. Add logging/metrics around the legacy path to measure traffic.
+3. Do not change behavior yet.
+
+### Phase 2 — Boundary DTO (week 1–2)
+
+1. Introduce `AssignDriverBody` and `AssignDriverDto` in an `api` module.
+2. Replace direct field access in the handler with `AssignDriverCommand::try_from(dto)`.
+3. Legacy service still receives strings; validation now lives in `TryFrom`.
+4. Ship behind the same route; tests must stay green.
+
+See [`boundary-defense.md`](./boundary-defense.md).
+
+### Phase 3 — Newtypes on touched IDs (week 2)
+
+1. Add `RequestId`, `DriverId` newtypes in a `domain` crate or module.
+2. Change `TryFrom` to construct newtypes; legacy service accepts `.as_str()` at the seam.
+3. Enable extra clippy on the new `domain` module only.
+
+See [`domain-modeling.md`](./domain-modeling.md).
+
+### Phase 4 — Use case extraction (week 3)
+
+1. Create `AssignDriverUseCase` with the legacy SQL inlined in a private method.
+2. Handler calls `use_case.execute(cmd)` only.
+3. Replace `anyhow` in this path with `AssignDriverError` (`thiserror`).
+
+See [`error-handling.md`](./error-handling.md).
+
+### Phase 5 — Typed state for one aggregate (week 3–4)
+
+1. Model `WaitingRequest` and `EnRouteRequest`; move assignment logic to `WaitingRequest::assign_driver(self, ...)`.
+2. Legacy `status: String` remains in DB; adapter maps rows <-> state structs.
+3. Add unit tests on transitions without HTTP.
+
+See [`state-transitions.md`](./state-transitions.md).
+
+### Phase 6 — Repository port (week 4–5)
+
+1. Define `RequestResolver` and `RequestStore` traits.
+2. Move SQL from use case to `SqlxRequestStore`.
+3. Use case depends on traits only; wire in `main`.
+
+See [`persistence-events.md`](./persistence-events.md) and [`application-wiring.md`](./application-wiring.md).
+
+### Phase 7 — Transactions, version, outbox (week 5–6)
+
+1. Add `version` column and conditional `UPDATE`.
+2. Wrap state save + outbox insert in one transaction.
+3. Add idempotency key support for retried clients.
+
+See [`aggregate-transactions.md`](./aggregate-transactions.md).
+
+### Phase 8 — Remove legacy path (week 6+)
+
+1. Confirm feature flag or route traffic is 100% on new path.
+2. Delete legacy service function and dead `status` string checks.
+3. Run `kamae-rs-review` on the migrated module.
+
+Adjust pacing to team size. Each phase is an independent PR when possible.
+
 ## Keep Diffs Reviewable
 
 Practical rules for team rollout:

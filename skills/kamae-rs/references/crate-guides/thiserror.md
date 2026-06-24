@@ -15,3 +15,11 @@ pub enum DomainError {
 ```
 
 Keep variants semantic. Avoid catch-all variants such as `Other(String)` in domain errors unless they wrap an infrastructure failure at an application boundary.
+
+## Common Combinations
+
+| Stack | Pattern | Topic guide |
+| --- | --- | --- |
+| `thiserror` + `serde` boundary | `TryFrom<Dto>` with `type Error = CommandError` | [`boundary-defense.md`](../boundary-defense.md) |
+| `thiserror` + `sqlx` | `RepositoryError` wraps `sqlx::Error` at adapter edge | [`persistence-events.md`](../persistence-events.md) |
+| `thiserror` + transitions | `AssignDriverError` separates domain vs not-found vs conflict | [`state-transitions.md`](../state-transitions.md), [`aggregate-transactions.md`](../aggregate-transactions.md) |

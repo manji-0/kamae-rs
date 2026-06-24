@@ -24,3 +24,7 @@ Flag inbound DTOs using broad `Default`, optional fields, or permissive unknown-
 ## 4.5 Are authorization and tenant boundaries checked? - High
 
 Flag handlers or use cases that trust path/body tenant IDs, actor IDs, or ownership claims without comparing them to authenticated context before domain operations.
+
+## 4.6 Is validated leaf deserialization distinguished from aggregate parsing? - Medium
+
+Flag `Deserialize` on aggregates, commands, or multi-field entities when a DTO plus `TryFrom` would enforce cross-field rules. Do not flag `#[serde(try_from = "...")]` on leaf value objects (IDs, email, slugs) when it delegates to the same constructor as normal code.
