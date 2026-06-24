@@ -164,16 +164,54 @@ mod tests {
     }
 
     #[test]
-    fn constructs_and_assigns_waiting_request() {
-        let request = WaitingRequest::new(request_id("req-1"), passenger_id("passenger-1"), false);
-        let driver = DriverAssignment::new(driver_id("driver-1"), false);
+    fn assign_driver_preserves_identity_and_emits_event() {
+        let request_id = request_id("req-1");
+        let passenger_id = passenger_id("passenger-1");
+        let driver_id = driver_id("driver-1");
+        let request = WaitingRequest::new(request_id.clone(), passenger_id.clone(), false);
+        let driver = DriverAssignment::new(driver_id.clone(), false);
 
         let transition = request
             .assign_driver(driver)
             .expect("driver can serve request without accessibility needs");
 
-        assert_eq!(transition.events.len(), 1);
+        assert_eq!(
+            transition.state,
+            EnRouteRequest {
+                request_id: request_id.clone(),
+                passenger_id: passenger_id.clone(),
+                driver_id: driver_id.clone(),
+            }
+        );
+        assert_eq!(
+            transition.events,
+            vec![TaxiRequestEvent::DriverAssigned {
+                request_id,
+                driver_id,
+            }]
+        );
+    }
+
+    #[test]
+    fn assign_driver_serves_accessibility_request_when_driver_accepts() {
+        let request = WaitingRequest::new(request_id("req-3"), passenger_id("passenger-3"), true);
+        let driver = DriverAssignment::new(driver_id("driver-3"), true);
+
+        let transition = request
+            .assign_driver(driver)
+            .expect("accessible driver can serve accessibility request");
+
         assert!(matches!(transition.state, EnRouteRequest { .. }));
+        assert_eq!(transition.events.len(), 1);
+    }
+
+    #[test]
+    fn taxi_request_enum_stores_waiting_state() {
+        let waiting = WaitingRequest::new(request_id("req-4"), passenger_id("passenger-4"), false);
+
+        let request = TaxiRequest::Waiting(waiting);
+
+        assert!(matches!(request, TaxiRequest::Waiting(_)));
     }
 
     #[test]
@@ -183,6 +221,24 @@ mod tests {
             IdError::Empty {
                 field: "request_id"
             }
+        );
+    }
+
+    #[test]
+    fn rejects_empty_passenger_id() {
+        assert_eq!(
+            PassengerId::new("").unwrap_err(),
+            IdError::Empty {
+                field: "passenger_id"
+            }
+        );
+    }
+
+    #[test]
+    fn rejects_empty_driver_id() {
+        assert_eq!(
+            DriverId::new("  ").unwrap_err(),
+            IdError::Empty { field: "driver_id" }
         );
     }
 

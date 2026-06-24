@@ -15,3 +15,11 @@ unsafe_code = "forbid"
 unwrap_used = "warn"
 expect_used = "warn"
 panic = "warn"
+
+[dev-dependencies]
+trybuild = "1"
+
+[[test]]
+name = "compile_fail"
+path = "tests/compile_fail.rs"
+harness = false
