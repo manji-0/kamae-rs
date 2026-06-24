@@ -1,5 +1,6 @@
 # Tests Checklist
-Reference: [`../../kamae-rs/references/test-data.md`](../../kamae-rs/references/test-data.md).
+
+Reference: [`../../kamae-rs/references/test-data.md`](../../kamae-rs/references/test-data.md), [`../../kamae-rs/references/quality-gates.md`](../../kamae-rs/references/quality-gates.md).
 
 ## 19.1 Do tests exercise constructors and conversions? - Medium
 

@@ -2,6 +2,7 @@
 
 <!-- constrained-by ./application-wiring.md -->
 <!-- constrained-by ./ci-setup.md -->
+<!-- constrained-by ./quality-gates.md -->
 <!-- constrained-by ./test-data.md -->
 
 ## Goal
@@ -214,8 +215,9 @@ enough. OpenTelemetry exporters are optional during domain development.
 
 ## Local Check Loop
 
-Align local commands with [`ci-setup.md`](./ci-setup.md). Use a fast path while
-editing and a full path before opening a pull request.
+Align local commands with [`quality-gates.md`](./quality-gates.md) and
+[`ci-setup.md`](./ci-setup.md). Use a fast path while editing and a full path
+before opening a pull request.
 
 **Fast path** (touched crate):
 
@@ -228,7 +230,7 @@ cargo test -p domain -p application
 **Full path** (pre-push):
 
 ```bash
-cargo fmt --check
+cargo fmt --all -- --check
 cargo clippy --all-targets --all-features -- -D warnings
 cargo test --all-targets --all-features
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
@@ -241,7 +243,8 @@ on changed Rust files before requesting review:
 python3 path/to/kamae-rs/scripts/review_probe.py src/domain/ src/application/
 ```
 
-Treat probe output as review leads, not automatic failures.
+Treat probe output as review leads, not automatic failures. For first-time
+project bootstrap, read [`local-validation.md`](./local-validation.md).
 
 ## Editor and Agent Setup
 

@@ -30,4 +30,4 @@ Escalate when an advisory check is the only guard for unsafe soundness, PII leak
 
 Flag CI that has no documented local equivalent for the core checks, especially when failure output is hard to reproduce.
 
-Suggest a short local command list or script that runs package validation, formatting, linting, and tests for touched crates. Cross-check [`../../kamae-rs/references/dev-environment.md`](../../kamae-rs/references/dev-environment.md) for the recommended fast path and full pre-push loop.
+Suggest a short local command list or script that runs package validation, formatting, linting, and tests for touched crates. Cross-check [`../../kamae-rs/references/quality-gates.md`](../../kamae-rs/references/quality-gates.md) for canonical commands and [`../../kamae-rs/references/dev-environment.md`](../../kamae-rs/references/dev-environment.md) for the recommended fast path and full pre-push loop.

@@ -1,0 +1,22 @@
+[package]
+name = "your-project"
+version = "0.1.0"
+edition = "2021"
+description = "Server-side Rust domain project"
+
+[dependencies]
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+tracing = "0.1"
+
+[dev-dependencies]
+proptest = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
+panic = "warn"

@@ -1,20 +1,113 @@
 # Rust CI Setup
 
+> **Audience:** Projects installing the skill into their own repository. For the `kamae-rs` skill repo itself, read [`development-setup.md`](./development-setup.md).
+> **When to read:** Creating or updating GitHub Actions, branch protection guidance, or repository validation jobs.
+> **Related:** [`quality-gates.md`](./quality-gates.md) (checks CI must run), [`local-validation.md`](./local-validation.md).
+
 ## Default Stance
 
 CI should enforce the same safety signals reviewers depend on: formatting, linting, tests, rustdoc, and package-specific validation. Keep the default pipeline boring and fast; add heavier checks only where their risk reduction is real.
 
 Use the repository's existing commands first. If no CI exists, start with the smallest workflow that covers changed Rust domain code.
 
+## Default GitHub Actions Workflow
+
+CI should run the same checks as [`quality-gates.md`](./quality-gates.md). Pin the Rust toolchain with `rust-toolchain.toml` or `dtolnay/rust-toolchain@...` so local and CI builds use the same components.
+
+When this skill is installed, use the bundled templates under [`../assets/templates/`](../assets/templates/):
+
+- [`../assets/templates/github-ci.yml`](../assets/templates/github-ci.yml) -> `.github/workflows/ci.yml` for ordinary Rust backend repositories.
+- [`../assets/templates/github-ci-skill-package.yml`](../assets/templates/github-ci-skill-package.yml) -> `.github/workflows/ci.yml` for skill/plugin repositories.
+- [`../assets/templates/validate_package.py`](../assets/templates/validate_package.py) -> `scripts/validate_package.py` when using the skill-package workflow.
+
+You can copy them with the bundled script:
+
+```bash
+python3 path/to/kamae-rs/skills/kamae-rs/scripts/apply_templates.py --target . --ci backend
+python3 path/to/kamae-rs/skills/kamae-rs/scripts/apply_templates.py --target . --ci skill-package
+```
+
+The script is non-destructive by default; use `--dry-run` to preview and `--force` only when intentionally replacing files.
+
+You can also add the Kamae review probe to CI or pre-push hooks:
+
+```bash
+python3 path/to/kamae-rs/scripts/review_probe.py src/domain/ src/application/ --json
+```
+
+The probe is advisory by default. Use it to surface review leads for panics, unsafe code, serde derives, and PII terms — not as a required merge gate unless your team documents that policy.
+
+After copying templates, replace `path/to/kamae-rs` in workflow steps with the installed skill path or vendor the script into your repository.
+
+Recommended workflow for skill/plugin repositories:
+
+```yaml
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Skill package checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate skill package
+        run: python3 scripts/validate_package.py
+
+      - name: Smoke review probe
+        run: python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
+
+  rust:
+    name: Rust checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: hashFiles('Cargo.toml') != ''
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Format
+        run: cargo fmt --all -- --check
+
+      - name: Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Test
+        run: cargo test --all-targets --all-features
+
+      - name: Docs
+        run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
+```
+
+For ordinary backend repositories that are not skill packages, omit the `Validate skill package` step or use [`../assets/templates/github-ci.yml`](../assets/templates/github-ci.yml).
+
 ## Minimum Rust Checks
 
 For a Rust crate or workspace, prefer these jobs:
 
 ```bash
-cargo fmt --check
+cargo fmt --all -- --check
 cargo clippy --all-targets --all-features -- -D warnings
 cargo test --all-targets --all-features
-cargo doc --no-deps --all-features
+RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
 ```
 
 Adjust `--all-features`, packages, or warning policy when the project has a known feature matrix. Do not introduce `-D warnings` across a legacy workspace unless the team is ready to fix existing warnings.
@@ -26,45 +119,15 @@ python3 scripts/validate_package.py
 python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
 ```
 
-## GitHub Actions Example
+## What CI Should Protect
 
-Use this as a starting point, not as a universal template:
+Keep these checks required for pull requests that touch domain, boundary, PII, persistence, event, test, or skill files:
 
-```yaml
-name: ci
-
-on:
-  pull_request:
-  push:
-    branches: [main]
-
-jobs:
-  package:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Validate skill package
-        run: python3 scripts/validate_package.py
-      - name: Smoke review probe
-        run: python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
-
-  rust:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Install Rust toolchain
-        run: rustup toolchain install stable --profile minimal --component clippy rustfmt
-      - name: Format
-        run: cargo fmt --check
-      - name: Clippy
-        run: cargo clippy --all-targets --all-features -- -D warnings
-      - name: Test
-        run: cargo test --all-targets --all-features
-      - name: Docs
-        run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
-```
-
-If the repository has no `Cargo.toml`, omit the `rust` job and keep package validation jobs.
+- Package validation for plugin manifests, skill frontmatter, links, and Python script syntax (skill/plugin repos).
+- `cargo fmt --check` on touched Rust code.
+- Relevant `cargo clippy` for the workspace or changed crates.
+- Tests covering constructors, transitions, boundary parsing, redaction, persistence retries, and event compatibility.
+- `cargo doc` with `-D warnings` when public domain API contracts changed.
 
 ## Matrix Strategy
 
@@ -90,6 +153,18 @@ For unsafe-heavy crates, FFI wrappers, or memory-layout code, consider adding on
 
 Do not require these jobs for every application crate by default. Tie them to risk: unsafe ownership, raw pointers, FFI lifetimes, parser trust boundaries, or compliance-sensitive data.
 
+## Pinning and Updates
+
+Pin action majors or immutable SHAs according to the repository's security policy. For higher supply-chain assurance, pin third-party actions by full commit SHA and keep the version comment beside it.
+
+Update action pins intentionally, not as drive-by churn in unrelated domain changes.
+
+## Branch Protection
+
+Require the CI job before merge. If a full test suite is too slow, split fast domain checks from slower integration tests, but keep the fast job required.
+
+For backend services with adapters, add separate jobs for database-backed integration tests, migration checks, or outbox relay tests when those risks are in scope.
+
 ## CI Review Rules
 
 When adding or reviewing CI:
@@ -107,11 +182,10 @@ Document a local command that approximates CI. Reviewers should be able to run t
 
 ```bash
 python3 scripts/validate_package.py
-cargo fmt --check
+cargo fmt --all -- --check
 cargo clippy --all-targets --all-features -- -D warnings
 cargo test --all-targets --all-features
 ```
 
 If full parity is too slow, document the fast path and the full path separately.
-See [`dev-environment.md`](./dev-environment.md) for toolchain setup, crate
-layout, test layers, fake ports, and the recommended local check loop.
+See [`dev-environment.md`](./dev-environment.md) and [`quality-gates.md`](./quality-gates.md) for toolchain setup, test layers, and the recommended local check loop.

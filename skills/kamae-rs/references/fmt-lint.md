@@ -57,10 +57,10 @@ Generated code may use broader allows, but safe wrappers around generated/FFI co
 
 ## CI Expectations
 
-Prefer CI jobs that run:
+Prefer CI jobs that run the baseline commands in [`quality-gates.md`](./quality-gates.md):
 
-- `cargo fmt --check`
+- `cargo fmt --all -- --check`
 - `cargo clippy` with the repository's feature/package matrix
 - tests relevant to domain constructors, transitions, boundary conversion, unsafe wrappers, and persistence behavior
 
-When a project cannot run full workspace checks quickly, run the smallest package/feature set that covers the changed code and state the limitation.
+When a project cannot run full workspace checks quickly, run the smallest package/feature set that covers the changed code and state the limitation. See [`ci-setup.md`](./ci-setup.md) for workflow templates and branch protection.

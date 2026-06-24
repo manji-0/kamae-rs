@@ -46,12 +46,19 @@ cargo test --all-targets --all-features
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
 ```
 
-See [`skills/kamae-rs/references/ci-setup.md`](./skills/kamae-rs/references/ci-setup.md)
-for the full reasoning behind each job and when to extend the matrix.
+See [`skills/kamae-rs/references/quality-gates.md`](./skills/kamae-rs/references/quality-gates.md)
+for the canonical check commands and
+[`skills/kamae-rs/references/ci-setup.md`](./skills/kamae-rs/references/ci-setup.md)
+for workflow templates and when to extend the matrix.
+
+For contributors working on this skill repository, read
+[`skills/kamae-rs/references/development-setup.md`](./skills/kamae-rs/references/development-setup.md).
 
 Application crates that follow the skill should also read
 [`skills/kamae-rs/references/dev-environment.md`](./skills/kamae-rs/references/dev-environment.md)
-for toolchain setup, crate layout, test layers, and the local check loop.
+for toolchain setup, crate layout, test layers, and the local check loop, and
+[`skills/kamae-rs/references/local-validation.md`](./skills/kamae-rs/references/local-validation.md)
+when bootstrapping from templates.
 
 ## Working on Skills
 
