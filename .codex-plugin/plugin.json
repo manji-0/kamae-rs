@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "description": "Kamae (構え) - robust server-side Rust design and review skills",
   "author": {
-    "name": "kamae-rs contributors"
+    "name": "kamae-rs contributors",
+    "url": "https://github.com/manji-0/kamae-rs"
   },
-  "repository": "https://github.com/iwasa-kosui/kamae-rs",
+  "homepage": "https://github.com/manji-0/kamae-rs",
+  "repository": "https://github.com/manji-0/kamae-rs",
   "license": "MIT",
   "keywords": [
     "rust",
@@ -20,12 +22,17 @@
   "interface": {
     "displayName": "Kamae Rust",
     "shortDescription": "Robust Rust domain design and review",
+    "longDescription": "Design and review server-side Rust domain code with typed states, Result-based errors, validated boundaries, PII-safe patterns, and adversarial review checklists.",
     "developerName": "kamae-rs contributors",
     "category": "Developer Tools",
     "capabilities": [
-      "Write",
-      "Review"
+      "Interactive",
+      "Read",
+      "Write"
     ],
+    "websiteURL": "https://github.com/manji-0/kamae-rs",
+    "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+    "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
     "defaultPrompt": [
       "Use $kamae-rs to refine this Rust domain model.",
       "Use $kamae-rs-review to review this Rust diff."

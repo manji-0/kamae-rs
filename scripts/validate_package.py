@@ -50,7 +50,12 @@ def parse_frontmatter(path: Path, errors: list[str]) -> dict[str, str]:
 
 
 def check_json(errors: list[str]) -> None:
-    for path in [ROOT / ".claude-plugin" / "plugin.json", ROOT / ".claude-plugin" / "marketplace.json", ROOT / ".codex-plugin" / "plugin.json"]:
+    for path in [
+        ROOT / ".claude-plugin" / "plugin.json",
+        ROOT / ".claude-plugin" / "marketplace.json",
+        ROOT / ".codex-plugin" / "plugin.json",
+        ROOT / ".agents" / "plugins" / "marketplace.json",
+    ]:
         try:
             json.loads(path.read_text(encoding="utf-8"))
         except FileNotFoundError:
@@ -73,6 +78,26 @@ def has_skill_file(path: Path) -> bool:
     if (path / "SKILL.md").is_file():
         return True
     return any(child.is_dir() and (child / "SKILL.md").is_file() for child in path.iterdir()) if path.is_dir() else False
+
+
+def check_codex_interface(errors: list[str]) -> None:
+    manifest = ROOT / ".codex-plugin" / "plugin.json"
+    data = json.loads(manifest.read_text(encoding="utf-8"))
+    interface = data.get("interface")
+    if not isinstance(interface, dict):
+        fail(errors, f"{manifest.relative_to(ROOT)}: missing top-level interface object")
+        return
+    for key in [
+        "displayName",
+        "shortDescription",
+        "longDescription",
+        "developerName",
+        "category",
+        "capabilities",
+        "defaultPrompt",
+    ]:
+        if not interface.get(key):
+            fail(errors, f"{manifest.relative_to(ROOT)}: missing interface.{key}")
 
 
 def check_manifest_skill_paths(errors: list[str]) -> None:
@@ -211,6 +236,7 @@ def main() -> int:
     errors: list[str] = []
     check_json(errors)
     if not errors:
+        check_codex_interface(errors)
         check_manifest_skill_paths(errors)
     check_skill_frontmatter(errors)
     check_markdown_links(errors)

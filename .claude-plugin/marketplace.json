@@ -1,17 +1,17 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "kamae-rs",
+  "description": "Kamae (構え) - robust server-side Rust design harness",
   "owner": {
     "name": "kamae-rs contributors"
-  },
-  "metadata": {
-    "description": "Kamae (構え) - robust server-side Rust design harness",
-    "version": "0.1.0"
   },
   "plugins": [
     {
       "name": "kamae-rs",
       "description": "Server-side Rust design and review skills with rules-based customization",
       "source": "./",
+      "category": "development",
+      "homepage": "https://github.com/manji-0/kamae-rs",
       "strict": false,
       "skills": [
         "./skills/kamae-rs",

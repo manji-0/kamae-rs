@@ -33,7 +33,7 @@ Use during Rust code review. It walks severity-tagged checklist files for domain
 The package includes both Claude and Codex manifests:
 
 - `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` describe the Claude plugin package.
-- `.codex-plugin/plugin.json` describes the Codex plugin package and points Codex at `./skills/`.
+- `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` describe the Codex plugin package and point Codex at `./skills/`.
 
 Run `python3 scripts/validate_package.py` before publishing or sharing a package archive. The smoke test validates JSON manifests, skill frontmatter, relative Markdown links, manifest skill paths, and crate-guide references.
 
