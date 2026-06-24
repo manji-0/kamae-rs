@@ -35,15 +35,9 @@ Run the baseline commands in [`quality-gates.md`](./quality-gates.md). For this 
 ```bash
 python3 scripts/validate_package.py
 python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
-```
-
-If a `Cargo.toml` exists at the repository root or in workspace members, also run:
-
-```bash
 cargo fmt --all -- --check
-cargo clippy --all-targets --all-features -- -D warnings
-cargo test --all-targets --all-features
-RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
+cargo clippy --all-targets -- -D warnings
+cargo test --all-targets
 ```
 
 Apply formatting with `cargo fmt --all` if the format check fails.

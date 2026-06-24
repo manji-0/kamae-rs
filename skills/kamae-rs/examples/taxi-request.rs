@@ -147,6 +147,7 @@ impl WaitingRequest {
 }
 
 #[cfg(test)]
+#[allow(clippy::expect_used, clippy::unwrap_used)] // fixture helpers and assertion paths
 mod tests {
     use super::*;
 

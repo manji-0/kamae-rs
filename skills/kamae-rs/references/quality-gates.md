@@ -35,7 +35,7 @@ python3 scripts/validate_package.py
 python3 path/to/kamae-rs/scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
 ```
 
-In the **kamae-rs** repository itself, use `scripts/validate_package.py` and `scripts/review_probe.py`. The probe is advisory: it suggests review leads, not automatic failures. See [`ci-setup.md`](./ci-setup.md) for workflow wiring and [`development-setup.md`](./development-setup.md) for this repo's dev workflow.
+In the **kamae-rs** repository itself, use `scripts/validate_package.py` and `scripts/review_probe.py`. Example code lives in the workspace crate `kamae-rs-taxi-request` under `skills/kamae-rs/examples/`; run `cargo test --all-targets` from the repository root. See [`development-setup.md`](./development-setup.md) for this repo's dev workflow.
 
 Application crates that install the skill may add the probe to CI or pre-push hooks when domain directories change:
 

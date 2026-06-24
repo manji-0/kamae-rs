@@ -34,16 +34,11 @@ python3 scripts/validate_package.py
 
 # Review probe smoke test
 python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
-```
 
-If the repository also contains Rust domain code under a crate, run the
-standard Rust checks:
-
-```bash
-cargo fmt --check
-cargo clippy --all-targets --all-features -- -D warnings
-cargo test --all-targets --all-features
-RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
+# Skill example crate (taxi-request)
+cargo fmt --all -- --check
+cargo clippy --all-targets -- -D warnings
+cargo test --all-targets
 ```
 
 See [`skills/kamae-rs/references/quality-gates.md`](./skills/kamae-rs/references/quality-gates.md)

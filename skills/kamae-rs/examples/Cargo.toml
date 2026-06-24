@@ -1,0 +1,17 @@
+[package]
+name = "kamae-rs-taxi-request"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+description = "Kamae Rust taxi request state-transition example"
+
+[lib]
+path = "taxi-request.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
+panic = "warn"

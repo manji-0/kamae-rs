@@ -117,7 +117,12 @@ For this skill package, also run:
 ```bash
 python3 scripts/validate_package.py
 python3 scripts/review_probe.py skills/kamae-rs/examples/taxi-request.rs --json
+cargo fmt --all -- --check
+cargo clippy --all-targets -- -D warnings
+cargo test --all-targets
 ```
+
+The example crate `kamae-rs-taxi-request` uses [`skills/kamae-rs/examples/Cargo.toml`](../examples/Cargo.toml) with `path = "taxi-request.rs"` so the sample compiles and tests in CI without duplicating source.
 
 ## What CI Should Protect
 
