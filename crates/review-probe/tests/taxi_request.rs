@@ -17,7 +17,10 @@ fn taxi_request_emits_expected_lead_categories() {
     let output = probe_paths(&root, &[example]);
 
     assert_eq!(output.scanned_files.len(), 1);
-    assert!(output.summary.leads_by_category.contains_key("lint-suppression"));
+    assert!(output
+        .summary
+        .leads_by_category
+        .contains_key("lint-suppression"));
     assert!(output.summary.leads_by_category.contains_key("panic-path"));
     assert!(output.summary.public_items >= 10);
     assert_eq!(

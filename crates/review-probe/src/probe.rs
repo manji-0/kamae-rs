@@ -95,9 +95,7 @@ fn summarize(leads: &[Lead], public_items: &[PublicItem]) -> Summary {
         .count();
     let result_without_errors = public_items
         .iter()
-        .filter(|item| {
-            item.signature.contains("Result") && item.has_doc && !item.has_errors
-        })
+        .filter(|item| item.signature.contains("Result") && item.has_doc && !item.has_errors)
         .count();
 
     Summary {

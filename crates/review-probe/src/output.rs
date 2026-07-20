@@ -29,10 +29,7 @@ pub fn render_text(output: &ProbeOutput, limit: usize) -> String {
             "leads_by_checklist",
             format!("{:?}", output.summary.leads_by_checklist),
         ),
-        (
-            "public_items",
-            output.summary.public_items.to_string(),
-        ),
+        ("public_items", output.summary.public_items.to_string()),
         (
             "public_items_missing_docs",
             output.summary.public_items_missing_docs.to_string(),
@@ -121,10 +118,7 @@ pub fn render_text(output: &ProbeOutput, limit: usize) -> String {
                 ));
             }
             if total > limit {
-                lines.push(format!(
-                    "- Truncated {} additional item(s).",
-                    total - limit
-                ));
+                lines.push(format!("- Truncated {} additional item(s).", total - limit));
             }
         }
     }

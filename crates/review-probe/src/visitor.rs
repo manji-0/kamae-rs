@@ -152,17 +152,46 @@ const PROPERTY_TEST: Pattern = Pattern::new(
 );
 
 const PII_TERMS: &[&str] = &[
-    "email", "phone", "address", "password", "passwd", "token", "secret", "api_key", "ssn",
-    "patient", "diagnosis", "ip_address", "location",
+    "email",
+    "phone",
+    "address",
+    "password",
+    "passwd",
+    "token",
+    "secret",
+    "api_key",
+    "ssn",
+    "patient",
+    "diagnosis",
+    "ip_address",
+    "location",
 ];
 
 const PERSISTENCE_TERMS: &[&str] = &[
-    "transaction", "commit", "rollback", "outbox", "publish", "event", "save", "insert", "update",
-    "delete", "idempot", "retry", "version", "lock",
+    "transaction",
+    "commit",
+    "rollback",
+    "outbox",
+    "publish",
+    "event",
+    "save",
+    "insert",
+    "update",
+    "delete",
+    "idempot",
+    "retry",
+    "version",
+    "lock",
 ];
 
 const STREAM_TERMS: &[&str] = &[
-    "Stream", "StreamExt", "stream", "async_stream", "projection", "subscribe", "checkpoint",
+    "Stream",
+    "StreamExt",
+    "stream",
+    "async_stream",
+    "projection",
+    "subscribe",
+    "checkpoint",
     "outbox",
 ];
 
@@ -305,7 +334,11 @@ impl<'ast> Visit<'ast> for ProbeVisitor<'ast> {
             }
             Some("derive") => {
                 if let Meta::List(list) = &attr.meta {
-                    self.visit_meta_list_tokens(BOUNDARY_DERIVE, attr.span(), &list.tokens.to_string());
+                    self.visit_meta_list_tokens(
+                        BOUNDARY_DERIVE,
+                        attr.span(),
+                        &list.tokens.to_string(),
+                    );
                 }
             }
             Some("source") | Some("from") => {
@@ -397,11 +430,23 @@ impl<'ast> Visit<'ast> for ProbeVisitor<'ast> {
             let line = line_of(path.segments[0].ident.span());
             self.push_lead(ASYNC_OPERATIONAL, line, snippet_at(self.source, line));
         }
-        if path_matches(path, &["MaybeUninit", "transmute", "from_raw", "as_ptr", "as_mut_ptr"]) {
+        if path_matches(
+            path,
+            &[
+                "MaybeUninit",
+                "transmute",
+                "from_raw",
+                "as_ptr",
+                "as_mut_ptr",
+            ],
+        ) {
             let line = line_of(path.segments[0].ident.span());
             self.push_lead(UNSAFE, line, snippet_at(self.source, line));
         }
-        if path_matches(path, &["proptest", "quickcheck", "ProptestConfig", "Strategy"]) {
+        if path_matches(
+            path,
+            &["proptest", "quickcheck", "ProptestConfig", "Strategy"],
+        ) {
             let line = line_of(path.segments[0].ident.span());
             self.push_lead(PROPERTY_TEST, line, snippet_at(self.source, line));
         }
@@ -469,7 +514,10 @@ fn item_attrs(item: &Item) -> &[Attribute] {
 
 pub enum CollectOutcome {
     Skipped,
-    Collected { leads: Vec<Lead>, public_items: Vec<PublicItem> },
+    Collected {
+        leads: Vec<Lead>,
+        public_items: Vec<PublicItem>,
+    },
     ParseError(syn::Error),
 }
 

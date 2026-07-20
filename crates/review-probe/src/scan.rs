@@ -1,13 +1,6 @@
 use std::path::{Path, PathBuf};
 
-const SKIP_DIRS: &[&str] = &[
-    ".git",
-    ".dagayn",
-    "target",
-    "node_modules",
-    ".venv",
-    "venv",
-];
+const SKIP_DIRS: &[&str] = &[".git", ".dagayn", "target", "node_modules", ".venv", "venv"];
 
 pub fn iter_rust_files(paths: &[PathBuf]) -> Vec<PathBuf> {
     let mut files = Vec::new();
@@ -61,7 +54,12 @@ pub fn rel_path(path: &Path, root: &Path) -> String {
 
 pub fn is_generated(path: &Path, text: &str) -> bool {
     let rel = path.to_string_lossy().to_ascii_lowercase();
-    let head = text.lines().take(8).collect::<Vec<_>>().join("\n").to_ascii_lowercase();
+    let head = text
+        .lines()
+        .take(8)
+        .collect::<Vec<_>>()
+        .join("\n")
+        .to_ascii_lowercase();
     rel.contains("generated")
         || rel.contains("bindings")
         || head.contains("@generated")
