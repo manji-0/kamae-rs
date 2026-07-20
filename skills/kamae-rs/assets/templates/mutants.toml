@@ -1,0 +1,10 @@
+# Example cargo-mutants config. Copy to .cargo/mutants.toml and tune.
+# Docs: https://mutants.rs/config-file.html
+
+exclude_globs = [
+  "**/generated/**",
+  "**/bin/**",
+]
+
+# Uncomment to skip cosmetic impls once the domain package is green:
+# exclude_re = ["impl Debug", "impl Display"]

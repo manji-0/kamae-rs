@@ -5,7 +5,7 @@
 <!-- constrained-by ./pii-protection.md -->
 
 > **When to read:** Adding fixtures, factories, property-based tests, transition tests, boundary tests, or persistence retry tests.
-> **Related:** [`state-transitions.md`](./state-transitions.md), [`logging-metrics.md`](./logging-metrics.md), [`property-based-tests.md`](./property-based-tests.md).
+> **Related:** [`state-transitions.md`](./state-transitions.md), [`logging-metrics.md`](./logging-metrics.md), [`property-based-tests.md`](./property-based-tests.md), [`mutation-testing.md`](./mutation-testing.md).
 
 ## Build Fixtures Through Public Paths
 

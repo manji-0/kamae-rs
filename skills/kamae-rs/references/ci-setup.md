@@ -19,12 +19,14 @@ When this skill is installed, use the bundled templates under [`../assets/templa
 - [`../assets/templates/github-ci.yml`](../assets/templates/github-ci.yml) -> `.github/workflows/ci.yml` for ordinary Rust backend repositories.
 - [`../assets/templates/github-ci-skill-package.yml`](../assets/templates/github-ci-skill-package.yml) -> `.github/workflows/ci.yml` for skill/plugin repositories.
 - [`../assets/templates/validate_package.py`](../assets/templates/validate_package.py) -> `scripts/validate_package.py` when using the skill-package workflow.
+- [`../assets/templates/github-ci-mutants.yml`](../assets/templates/github-ci-mutants.yml) + [`../assets/templates/mutants.toml`](../assets/templates/mutants.toml) -> optional assertion-strength job (`--mutants`).
 
 You can copy them with the bundled script:
 
 ```bash
 python3 path/to/kamae-rs/skills/kamae-rs/scripts/apply_templates.py --target . --ci backend
 python3 path/to/kamae-rs/skills/kamae-rs/scripts/apply_templates.py --target . --ci skill-package
+python3 path/to/kamae-rs/skills/kamae-rs/scripts/apply_templates.py --target . --ci none --mutants
 ```
 
 The script is non-destructive by default; use `--dry-run` to preview and `--force` only when intentionally replacing files.
@@ -145,6 +147,21 @@ Use a matrix when domain behavior changes across:
 - target OS or architecture for FFI/unsafe code
 
 Keep expensive matrix entries scheduled or manually triggered unless the risk justifies every pull request paying the cost.
+
+## Optional Assertion-Strength Checks
+
+When domain constructors, transitions, or boundary conversion are high-stakes and
+the ordinary suite is green, add mutation testing as a separate optional job —
+not as part of unsafe/security probing.
+
+- Prefer PR incremental runs with `--in-diff`; keep full-tree runs scheduled or
+  sharded. See [`mutation-testing.md`](./mutation-testing.md#ci-guide).
+- Copy [`../assets/templates/github-ci-mutants.yml`](../assets/templates/github-ci-mutants.yml)
+  and [`../assets/templates/mutants.toml`](../assets/templates/mutants.toml) when
+  adopting the skill templates (`apply_templates.py --mutants`).
+
+Do not make mutation jobs required until excludes and package filters are tuned.
+Do not conflate mutation results with Miri, sanitizers, or secret scanning.
 
 ## Unsafe and Security Checks
 

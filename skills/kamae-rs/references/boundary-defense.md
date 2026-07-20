@@ -129,7 +129,7 @@ Skip `deny_unknown_fields` when:
 
 For outbound DTOs, `deny_unknown_fields` is rarely needed; focus on stable field names and explicit optional fields.
 
-## `serde(try_from)` for Value Objects
+## serde try_from for Value Objects
 
 For leaf types with a single invariant-bearing field, delegate deserialization to the same constructor used by normal code. See also [`crate-guides/serde.md`](./crate-guides/serde.md).
 

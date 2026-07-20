@@ -1,0 +1,55 @@
+# Optional assertion-strength job. Merge into an existing workflow or keep
+# as a separate workflow. Adjust -p and paths to your domain crates.
+# See skills/kamae-rs/references/mutation-testing.md
+
+name: cargo-mutants
+
+on:
+  pull_request:
+    paths:
+      - ".cargo/mutants.toml"
+      - "Cargo.*"
+      - "src/**"
+      - "tests/**"
+      - ".github/workflows/cargo-mutants.yml"
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  incremental-mutants:
+    name: Mutants in PR diff
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-mutants
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-mutants
+
+      - name: Diff against base
+        run: git diff origin/${{ github.base_ref }}...HEAD > git.diff
+
+      - name: Mutants in diff
+        # Replace -p domain with your domain package(s).
+        run: cargo mutants -vV --in-place --in-diff git.diff -p domain
+
+      - name: Upload mutants.out
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutants-incremental.out
+          path: mutants.out

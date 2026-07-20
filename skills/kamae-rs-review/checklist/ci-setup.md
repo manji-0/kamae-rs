@@ -31,3 +31,7 @@ Escalate when an advisory check is the only guard for unsafe soundness, PII leak
 Flag CI that has no documented local equivalent for the core checks, especially when failure output is hard to reproduce.
 
 Suggest a short local command list or script that runs package validation, formatting, linting, and tests for touched crates. Cross-check [`../../kamae-rs/references/quality-gates.md`](../../kamae-rs/references/quality-gates.md) for canonical commands and [`../../kamae-rs/references/dev-environment.md`](../../kamae-rs/references/dev-environment.md) for the recommended fast path and full pre-push loop.
+
+## 10.6 Are mutation jobs shelved as assertion strength, not security? - Low
+
+Cross-check [`../../kamae-rs/references/mutation-testing.md`](../../kamae-rs/references/mutation-testing.md#ci-guide) and [`../../kamae-rs/references/ci-setup.md`](../../kamae-rs/references/ci-setup.md#optional-assertion-strength-checks). Flag mutation workflows buried under "security" labels, required full-tree mutant gates without `--in-diff`/filters, or missing local parity docs.

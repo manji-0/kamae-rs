@@ -188,6 +188,11 @@ raise cases locally when debugging.
 - Do not disable shrinking in CI to save time unless the team accepts harder
   reproduction.
 
+Property tests widen inputs; they do not prove assertions are strong. After
+properties and examples are green on high-risk modules, consider
+[`mutation-testing.md`](./mutation-testing.md) (`cargo mutants`) to find silent
+gaps.
+
 ## Detection Hints
 
 When `Cargo.toml` includes `proptest` or `quickcheck`, load this guide together

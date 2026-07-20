@@ -69,9 +69,10 @@ links to its topic guide under `../kamae-rs/references/`.
 | 14 | `domain-macros.md` | `domain-macros.md` |
 | 15 | `service-boundaries.md` | `service-boundaries.md` |
 | 16 | `property-based-tests.md` | `property-based-tests.md` |
-| 17 | `application-wiring.md` | `application-wiring.md` |
-| 18 | `aggregate-transactions.md` | `aggregate-transactions.md` |
-| 19 | `tests.md` | `test-data.md`, `property-based-tests.md` |
+| 17 | `mutation-testing.md` | `mutation-testing.md` |
+| 18 | `application-wiring.md` | `application-wiring.md` |
+| 19 | `aggregate-transactions.md` | `aggregate-transactions.md` |
+| 20 | `tests.md` | `test-data.md`, `property-based-tests.md`, `mutation-testing.md` |
 
 ## Review Probe
 
@@ -101,6 +102,7 @@ Use probe output only to choose what to inspect. Do not report a finding until y
 | gRPC/Protobuf, tonic/prost, message queues, cross-service contracts | `service-boundaries.md`, `boundary.md`, `persistence-events.md`, `tests.md` |
 | `#[source]`, `#[from]`, error chain logging, duplicate error logs | `error-handling.md`, `logging-metrics.md`, `tests.md` |
 | `proptest`, `quickcheck`, `proptest!`, custom strategies, property regressions | `property-based-tests.md`, `tests.md`, nearby domain checklist |
+| `cargo mutants`, `mutants.out`, `#[mutants::skip]`, `.cargo/mutants.toml`, mutation CI | `mutation-testing.md`, `tests.md`, `ci-setup.md` |
 | Test-only helpers, builders, fixtures, compile-fail coverage | `tests.md` |
 
 Use nearby checklists when a diff crosses concerns. Do not load unrelated files just to restate generic advice.
@@ -123,6 +125,7 @@ Use nearby checklists when a diff crosses concerns. Do not load unrelated files 
 - [`checklist/domain-macros.md`](./checklist/domain-macros.md)
 - [`checklist/service-boundaries.md`](./checklist/service-boundaries.md)
 - [`checklist/property-based-tests.md`](./checklist/property-based-tests.md)
+- [`checklist/mutation-testing.md`](./checklist/mutation-testing.md)
 - [`checklist/application-wiring.md`](./checklist/application-wiring.md)
 - [`checklist/aggregate-transactions.md`](./checklist/aggregate-transactions.md)
 - [`checklist/tests.md`](./checklist/tests.md)

@@ -104,6 +104,7 @@ is present. Do not add crates to `domain` solely because a guide exists.
 | --- | --- | --- |
 | Async use cases | `tokio`, `tokio-test` | Test async ports with `#[tokio::test]` |
 | Property tests | `proptest`, `proptest-regressions` | See [`property-based-tests.md`](./property-based-tests.md) |
+| Mutation testing | `cargo-mutants` runner (+ optional `mutants` crate for skips) | See [`mutation-testing.md`](./mutation-testing.md) |
 | Compile-fail state safety | `trybuild` | See [`test-data.md`](./test-data.md) |
 | HTTP boundary tests | `axum`, `tower`, `http-body-util` | Test handlers with fake use cases |
 | Persistence integration | `testcontainers`, `sqlx` (test feature) | Optional; keep most domain tests on fakes |

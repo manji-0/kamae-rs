@@ -46,6 +46,19 @@ SKILL_PACKAGE_TEMPLATES = (
     ),
 )
 
+MUTANTS_TEMPLATES = (
+    TemplateCopy(
+        "mutants.toml",
+        Path(".cargo") / "mutants.toml",
+        "cargo-mutants package filters for domain crates",
+    ),
+    TemplateCopy(
+        "github-ci-mutants.yml",
+        Path(".github") / "workflows" / "cargo-mutants.yml",
+        "optional PR incremental cargo-mutants workflow",
+    ),
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -72,6 +85,11 @@ def parse_args() -> argparse.Namespace:
         help="Also install scripts/validate_package.py for skill/plugin repositories.",
     )
     parser.add_argument(
+        "--mutants",
+        action="store_true",
+        help="Also install .cargo/mutants.toml and an optional cargo-mutants workflow.",
+    )
+    parser.add_argument(
         "--force",
         action="store_true",
         help="Overwrite existing target files.",
@@ -84,12 +102,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def selected_templates(ci: str, include_skill_package: bool) -> list[TemplateCopy]:
+def selected_templates(ci: str, include_skill_package: bool, include_mutants: bool) -> list[TemplateCopy]:
     templates = list(BASE_TEMPLATES)
     if ci != "none":
         templates.append(CI_TEMPLATES[ci])
     if include_skill_package or ci == "skill-package":
         templates.extend(SKILL_PACKAGE_TEMPLATES)
+    if include_mutants:
+        templates.extend(MUTANTS_TEMPLATES)
     return templates
 
 
@@ -115,7 +135,11 @@ def copy_template(template: TemplateCopy, target_root: Path, *, force: bool, dry
 def main() -> int:
     args = parse_args()
     target_root = args.target.resolve()
-    templates = selected_templates(args.ci, args.skill_package or args.ci == "skill-package")
+    templates = selected_templates(
+        args.ci,
+        args.skill_package or args.ci == "skill-package",
+        args.mutants,
+    )
 
     for template in templates:
         print(copy_template(template, target_root, force=args.force, dry_run=args.dry_run))

@@ -72,6 +72,7 @@ Run focused tests for domain constructors, transitions, DTO conversion, PII reda
 | --- | --- | --- |
 | Fixtures and transition edges | unit/integration tests | [`test-data.md`](./test-data.md) |
 | Input-wide invariants | `proptest!` or `quickcheck!` | [`property-based-tests.md`](./property-based-tests.md) |
+| Assertion strength / silent gaps | `cargo mutants` on domain packages | [`mutation-testing.md`](./mutation-testing.md) |
 | Compile-time state safety | `trybuild` | [`test-data.md`](./test-data.md#test-compile-time-state-safety) |
 | Fake ports and use cases | `application` tests | [`dev-environment.md`](./dev-environment.md#fake-ports-and-test-fixtures) |
 
